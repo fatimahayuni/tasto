@@ -1,0 +1,215 @@
+body {
+    background-color: #201F24;
+}
+
+.black-bg {
+    background-color: #201F24;
+}
+
+.drag-drop-area {
+    border: 2px dashed #ccc;
+    padding: 50px;
+    text-align: center;
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+.drag-drop-area.dragging {
+    border-color: #007bff;
+    background-color: #e9ecef;
+}
+
+.preview {
+    margin-top: 20px;
+    max-height: 200px;
+}
+
+/* Sortable ingredients list*/
+.sortable-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sortable-list li {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.sortable-list li .col {
+    flex: 1;
+    padding: 5px;
+}
+
+.sortable-list li .col:first-child {
+    width: 40px;
+    /* Adjust size as needed */
+}
+
+.sortable-list li .col:last-child {
+    width: 40px;
+    /* Adjust size as needed */
+}
+
+#more {
+    display: none;
+}
+
+
+.form-control {
+    background-color: #201F24;
+    color: #e9ecef;
+    border: 2px solid;
+    border-radius: 0 20px 20px 0;
+    border-left-width: 0;
+}
+
+.form-control::placeholder {
+    color: #858586;
+}
+
+.form-control:focus {
+    background-color: #201F24;
+    border-color: #e9ecef;
+    outline: none;
+}
+
+.input-group {
+    border-radius: 20px;
+    /* 20px radius */
+    overflow: hidden;
+    /* Ensure no overflow from rounded corners */
+    border-width: 2px;
+    /* Increase border thickness */
+    color: #e9ecef;
+}
+
+.input-group .form-control {
+    background-color: #201F24;
+    color: #e9ecef;
+    border: 2px solid;
+    border-radius: 0 20px 20px 0;
+    border-left-width: 0;
+}
+
+
+.input-group-text {
+    color: #e9ecef;
+    background-color: #201F24;
+    border-radius: 20px 0 0 20px;
+    border-width: 2px;
+    border-right-width: 0;
+}
+
+
+
+/* 100-900 */
+.inter {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+}
+
+/* 100-900 */
+.montserrat {
+    font-family: "Montserrat", system-ui;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Montserrat';
+    font-weight: 900;
+    color: #e9ecef;
+}
+
+.white-text {
+    color: #e9ecef;
+}
+
+p {
+    font-family: "Inter";
+    font-weight: 400;
+    color: #e9ecef
+}
+
+.search-bar {
+    width: 90%;
+}
+
+.image-container {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+img.standard-size {
+    width: auto;
+    height: 200px;
+    object-fit: cover;
+
+}
+
+img-container {
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.centered-image {
+    border: none;
+    border-radius: 10px;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+
+}
+
+.card {
+    border: none;
+}
+
+.icon {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0 0 4em;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    width: 0.5em;
+    height: 0.5em;
+    font-size: 1rem;
+}
+
+.button {
+    width: 40px;
+    height: 40px;
+    padding: 0px;
+}
+
+.counter-border-grey {
+    border-radius: 5px;
+    border: 2px solid rgb(67, 65, 65);
+
+}
+
+.grey-bottom-border {
+    border-bottom: 2px solid grey;
+}

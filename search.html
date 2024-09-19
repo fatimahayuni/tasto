@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CSS without integrity -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!--Google fonts-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+
+  <!--CSS-->
+  <link rel="stylesheet" href="style.css">
+  <title>Search Page</title>
+</head>
+
+<body>
+  <!--Search bar-->
+  <div class="container d-flex justify-content-center">
+    <div class="input-group mb-3 search-bar">
+      <span class="input-group-text" id="submit"><img src="/assets/search.svg" alt="search icon" width="25px"></span>
+      <input type="text" class="form-control" placeholder="Nasi lemak" aria-label="Search"
+        aria-describedby="basic-addon1" id="searchTerms">
+    </div>
+  </div>
+
+  <!--Grids of recipes 2 cols by forever row-->
+  <div class="container d-flex justify-content-center">
+    <div class="container row row-cols-2 row-cols-md-4 g-4">
+      <div class="col">
+        <div class="card card-image h-100">
+          <img id="foodPic" src="/assets/laksa.jpg" class="card-img-top standard-size" alt="...">
+          <div class="card-body black-bg">
+            <h5 class="card-title white-text" id="foodName">Laksa</h5>
+            <p class="card-cuisine" id="foodCuisine">Under 30 mins</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/assets/carbonara.jpg" class="card-img-top standard-size" alt="...">
+          <div class="card-body black-bg">
+            <h5 class="card-title white-text">Carbonara</h5>
+            <p class="card-text">Under 30 mins</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/assets/pizza.jpg" class="card-img-top standard-size" alt="...">
+          <div class="card-body black-bg">
+            <h5 class="card-title white-text">Pizza</h5>
+            <p class="card-text">Under 30 mins</p>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card h-100">
+          <img src="/assets/nasilemak.jpeg" class="card-img-top standard-size" alt="...">
+          <div class="card-body black-bg">
+            <h5 class="card-title white-text">Nasi Lemak</h5>
+            <p class="card-text">Under 60 mins</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--End of grids of recipes 2 cols by forever row-->
+
+  <!--Test div for output-->
+  <div id="output"></div>
+
+  <!--Axios CDN-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.js"
+    integrity="sha512-luUnkeG+uabiT2pZdi5ME5uADvq+FpDs2fK5V0nVXrHCND9F077fKaE9W//oJvGnWSmwQmCau63A6s3um1NZmg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
+
+  <!--Javascript-->
+  <script src="search.js"></script>
+</body>
+
+</html>
