@@ -6,10 +6,15 @@ async function searchRecipe(recipeName) {
 async function displayRecipe(recipe) {
     const outputElement = document.querySelector("#output");
     outputElement.innerHTML = `
-    <h1>${recipe.meals[0].strMeal}</h1>
-    <p>${recipe.meals[0].strArea}</p>
-    <img src="${recipe.meals[0].strMealThumb}">
-    
+    <div class="col">
+        <div class="card card-image h-100">
+          <img id="foodPic" src="${recipe.meals[0].strMealThumb}" class="card-img-top standard-size" alt="...">
+          <div class="card-body black-bg">
+            <h5 class="card-food-name white-text" id="foodName">${recipe.meals[0].strMeal}</h5>
+            <p class="card-cuisine" id="foodCuisine">${recipe.meals[0].strArea}</p>
+          </div>
+        </div>
+      </div>
     `
 }
 
