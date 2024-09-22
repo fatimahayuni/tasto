@@ -18,3 +18,5 @@ async function fetchRecipeDetails(mealId) {
 
 fetchRecipeDetails(mealId);
 
+displayRecipeDetails
+

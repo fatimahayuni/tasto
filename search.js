@@ -7,7 +7,7 @@ async function searchRecipe(recipeName) {
     }
 }
 
-function displayRecipe(recipe) {
+function displayRecipes(recipe) {
     const outputElement = document.querySelector("#output");
     outputElement.innerHTML = '';  // Clear the previous content
 
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const recipe = await searchRecipe(searchTerms);
             if (recipe) {
                 console.log(recipe);  // Check what is returned here
-                displayRecipe(recipe);
+                displayRecipes(recipe);
             } else {
                 console.error("No recipe data returned");
             }
