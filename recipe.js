@@ -17,6 +17,7 @@ async function fetchRecipeDetails(mealId) {
 // Function to display recipe details
 async function displayRecipeDetails() {
   const data = await fetchRecipeDetails(mealId);
+  console.log(data);
   const meal = data.meals[0];
 
   // Set the image output div.
@@ -30,6 +31,25 @@ async function displayRecipeDetails() {
   imageDiv.innerHTML = `
   <img src="${meal.strMealThumb}" />`;
 
+  //todo Ingredients listing
+  // Set the ingredient row output div.
+  const ingredientList = document.querySelector("#ingredientRow");
+
+  // List one row of ingredient first to make sure it is working. Then do while loop. For each row, we have to create one ingredientRow. So
+  const ingredient = meal.strIngredient1;
+  console.log(ingredient);
+
+  const ingredientQty = meal.strMeasure1;
+  console.log(ingredientQty);
+
+  // Render one row of ingredient first.
+  //todo do a while loop to loop through the strIngredient[x] object until it hits null value. 
+  ingredientList.innerHTML = `
+  <div class="row" id="ingredientRow">
+      <div class="col-8">${ingredient}</div>
+      <div class="col-4 d-flex justify-content-end">${ingredientQty}</div>
+  </div>
+  `
 
   // Split the instructions by "\r\n" to get each step.
   const steps = meal.strInstructions.split("\r\n");
@@ -46,7 +66,7 @@ async function displayRecipeDetails() {
       stepsContainer.innerHTML +=
         `
       <div class="row">
-          <div class="col-1">${index + 1}.</div>
+          <div class="col-1">${index + 1}</div>
           <div class="col-11">${step}</div>
         </div>
       `
