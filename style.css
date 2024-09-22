@@ -213,3 +213,7 @@ img-container {
 .grey-bottom-border {
     border-bottom: 2px solid grey;
 }
+
+#cookingStepsContainer {
+    color: #e9ecef;
+}

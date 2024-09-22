@@ -18,14 +18,14 @@
     <!--End of favorite icon-->
 
     <!--Title and recipe introduction-->
-    <div class="container">
-        <h1 class="montserrat recipe-title">Title</h1>
+    <div class="container title-container">
+        <h1 class="montserrat" id="recipeTitle"></h1>
     </div>
     <!--End of title and recipe introduction-->
 
     <!--Photo of recipe-->
     <div class="container image-container">
-        <img src="/assets/tuscan.jpg" width="500px" height="500px" alt="" class="centered-image" id="recipeImage">
+        <div id="recipeImage" class="centered-image"></div>
     </div>
     <!--End of photo of recipe-->
 
@@ -70,22 +70,16 @@
     </div>
     <!--End of List of ingredients and the quantity-->
 
-
     <!--Steps:-->
-    <div class="container py-4">
-
+    <div class="container">
         <h4 class="montserrat">Steps</h4>
-
-        <!--This row will repeat for each step-->
-        <div class="row">
-            <div class="col-1 step-number">
-                <!--This will be dynamically filled with the step number-->
-            </div>
-            <div class="col-11 cooking-step">
-                <!--This will be dynamically filled with the step description-->
-            </div>
+    </div>
+    <div class="container py-4">
+        <div class="row" id="cookingStepsContainer">
+            <!--Steps will be dynamically added here.-->
         </div>
     </div>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.js"
         integrity="sha512-luUnkeG+uabiT2pZdi5ME5uADvq+FpDs2fK5V0nVXrHCND9F077fKaE9W//oJvGnWSmwQmCau63A6s3um1NZmg=="
