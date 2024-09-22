@@ -19,33 +19,17 @@
 
     <!--Title and recipe introduction-->
     <div class="container">
-        <h1 class="montserrat">Title</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus imperdiet, nulla et dictum interdum, nisi
-            lorem egestas vitae scel<span id="dots">...</span><span id="more">erisque enim ligula venenatis dolor.
-                Maecenas nisl est, ultrices nec congue eget, auctor vitae massa. Fusce luctus vestibulum augue ut
-                aliquet. Nunc sagittis dictum nisi, sed ullamcorper ipsum dignissim ac. In at libero sed nunc venenatis
-                imperdiet sed ornare turpis. Donec vitae dui eget tellus gravida venenatis. Integer fringilla congue
-                eros non fermentum. Sed dapibus pulvinar nibh tempor porta.</span></p>
-
-        <div class="d-flex justify-content-end">
-            <button onclick="myFunction()" id="myBtn" class="icon justify-content-end button">
-                <img src="/assets/down-arrow.png" class="img-fluid">
-            </button>
-        </div>
-
-
-
-
+        <h1 class="montserrat recipe-title">Title</h1>
     </div>
     <!--End of title and recipe introduction-->
 
     <!--Photo of recipe-->
     <div class="container image-container">
-        <img src="/assets/tuscan.jpg" width="500px" height="500px" alt="" class="centered-image">
+        <img src="/assets/tuscan.jpg" width="500px" height="500px" alt="" class="centered-image" id="recipeImage">
     </div>
     <!--End of photo of recipe-->
 
-    <!--Ingredients-->
+    <!--Ingredients quantity calculator-->
     <div class="container">
         <div class="row py-4">
             <div class="col-6">
@@ -68,76 +52,39 @@
                         <p>+</p>
                     </div>
                 </div>
-
-
-            </div>
-            <div></div>
-        </div>
-
-    </div>
-    <!--End of ingredients-->
-
-    <!--List of ingredients-->
-    <div class="container grey-bottom-border">
-        <div class="row">
-            <div class="col-8">
-                <p>Chicken</p>
-            </div>
-            <div class="col-4 d-flex justify-content-end">
-                <p>One piece</p>
             </div>
         </div>
     </div>
-    <!--End of ist of ingredients-->
+    <!--End of ingredients quantity calculator-->
 
-    <!--Preparation-->
-    <div class="container">
-        <div class="">
-            <h4 class="montserrat py-4">Preparation</h4>
-        </div>
-        <div class="row">
-            <div class="col-4">
-                <div>
-                    <h6 class="montserrat">Total Time</h6>
-                </div>
-                <div>
-                    <p>52 minutes</p>
-                </div>
+    <!--List of ingredients and the quantity-->
+    <div class="container grey-bottom-border ingredient-container">
+        <div class="row ingredient-row">
+            <div class="col-8" id="ingredientName">
+                <!--This will dynamically populate the ingredients name-->
             </div>
-            <div class="col-4">
-                <div>
-                    <h6 class="montserrat">Prep Time</h6>
-                </div>
-                <div>
-                    <p>15 minutes</p>
-                </div>
-            </div>
-            <div class="col-4">
-                <div>
-                    <h6 class="montserrat">Cook Time</h6>
-                </div>
-                <div>
-                    <p>37 minutes</p>
-                </div>
+            <div class="col-4 d-flex justify-content-end" id="ingredientQuantity">
+                <!--This will dynamically populate the ingredients quantity-->
             </div>
         </div>
     </div>
-    <!--End of preparation-->
+    <!--End of List of ingredients and the quantity-->
+
 
     <!--Steps:-->
     <div class="container py-4">
 
         <h4 class="montserrat">Steps</h4>
 
+        <!--This row will repeat for each step-->
         <div class="row">
-            <div class="col-1">
-                <p><b>1</b></p>
+            <div class="col-1 step-number">
+                <!--This will be dynamically filled with the step number-->
             </div>
-            <div class="col-11">
-                <p>Giovanni Gorgio</p>
+            <div class="col-11 cooking-step">
+                <!--This will be dynamically filled with the step description-->
             </div>
         </div>
-
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.js"
