@@ -35,21 +35,29 @@ async function displayRecipeDetails() {
   // Set the ingredient row output div.
   const ingredientList = document.querySelector("#ingredientRow");
 
-  // List one row of ingredient first to make sure it is working. Then do while loop. For each row, we have to create one ingredientRow. So
-  const ingredient = meal.strIngredient1;
-  console.log(ingredient);
+  let x = 1;
+  let ingredientsHTML = '';
 
-  const ingredientQty = meal.strMeasure1;
-  console.log(ingredientQty);
 
-  // Render one row of ingredient first.
-  //todo do a while loop to loop through the strIngredient[x] object until it hits null value. 
-  ingredientList.innerHTML = `
-  <div class="row" id="ingredientRow">
-      <div class="col-8">${ingredient}</div>
-      <div class="col-4 d-flex justify-content-end">${ingredientQty}</div>
-  </div>
-  `
+  //loop through the strIngredient[x] object until it hits null value. 
+  while (meal[`strIngredient${x}`] && meal[`strMeasure${x}`]) {
+    const ingredient = meal[`strIngredient${x}`].trim();
+    const ingredientQty = meal[`strMeasure${x}`].trim();
+
+    // Append the ingredient and measurements to the HTML
+    ingredientsHTML += `
+      <div class="row" id="ingredientRow">
+          <div class="col-8">${ingredient}</div>
+          <div class="col-4 d-flex justify-content-end">${ingredientQty}</div>
+      </div>`;
+
+    x++; // Move to the next ingredient
+
+  }
+
+  // Set the innerHTML of ingredientList after the loop
+  ingredientList.innerHTML = ingredientsHTML
+
 
   // Split the instructions by "\r\n" to get each step.
   const steps = meal.strInstructions.split("\r\n");
@@ -73,8 +81,5 @@ async function displayRecipeDetails() {
     }
   }
 }
-
-
-
 
 displayRecipeDetails()
