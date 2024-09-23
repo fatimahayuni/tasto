@@ -50,13 +50,11 @@ async function displayRecipeDetails() {
           <div class="col-8">${ingredient}</div>
           <div class="col-4 d-flex justify-content-end">${ingredientQty}</div>
       </div>`;
-
-    x++; // Move to the next ingredient
-
+    x++;
   }
 
   // Set the innerHTML of ingredientList after the loop
-  ingredientList.innerHTML = ingredientsHTML
+  ingredientList.innerHTML = ingredientsHTML;
 
 
   // Split the instructions by "\r\n" to get each step.
