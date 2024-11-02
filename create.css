@@ -76,7 +76,7 @@ body {
 
 .input-group .form-control {
     background-color: #201F24;
-    color: blue;
+    color: white;
     border: 2px solid #e9ecef;
     border-radius: 20px 20px 20px 20px;
 }
@@ -212,4 +212,20 @@ img-container {
 .img-fluid {
     max-height: 30px;
     object-fit: contain;
+}
+
+.small-image {
+    width: 20px;
+    height: 20px;
+}
+
+img {
+    width: 20px;
+    height: 20px;
+}
+
+.list-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
