@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a New Recipe</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="create.css">
+
+</head>
+
+<body>
+    <div class="container sticky-top border border-warning white-text">
+        <div class="row">
+            <div class="col-md-1">X</div>
+            <div class="col-md-5"></div>
+            <div class="col-md-5 row">
+                <div class="col-md-6">Save</div>
+                <div class="col-md-6">Publish</div>
+            </div>
+            <div class="col-md-1">...</div>
+
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <!-- Drag and Drop Area -->
+                <div id="drag-drop-area" class="drag-drop-area">
+                    <p>Upload recipe photo</p>
+                    <input type="file" id="file-input" class="d-none" accept="image/*">
+                </div>
+            </div>
+
+            <!-- Preview Area -->
+            <div id="preview" class="mt-3"></div>
+        </div>
+    </div>
+
+
+    <!--Title-->
+    <div class="container">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Title: My best-ever pea soup" aria-label="Username"
+                aria-describedby="basic-addon1">
+        </div>
+    </div>
+
+    <!--Introduction-->
+    <div class="container mb-3">
+        <div class="input-group">
+            <textarea class="form-control input-group" aria-label="With textarea"
+                placeholder="Share a little more about this dish. What or who inspired you to cook it? What makes it special to you? What's your favorite way to eat it?"></textarea>
+        </div>
+    </div>
+
+    <!-- Serves and cook time-->
+    <div class="container">
+        <div class="row">
+            <!-- First Row -->
+
+            <div class="col-md-6 white-text">Serves</div>
+            <div class="col-md-6">
+                <!--problematic div-->
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="2 people" aria-label="Username"
+                        aria-describedby="basic-addon1">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <!-- Second Row -->
+            <div class="col-md-6 white-text">Cook Time</div>
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="1 hr 30 mins" aria-label="Username"
+                        aria-describedby="basic-addon1">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Sortable Ingredients-->
+    <div class="container">
+        <h3>Ingredients</h3>
+    </div>
+
+    <!--todo problematic div gpt check here-->
+    <div class="container">
+        <div class="row sortable-list d-flex justify-content-center">
+            <ul id="sortable">
+                <li draggable="true">
+                    <div class="row container border border-danger">
+                        <div class="col-md-4">
+                            <img src="/assets/hamburger.png">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Item 1" aria-label="Username"
+                                    aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <img src="/assets/elipsis.png">
+                        </div>
+                    </div>
+                </li>
+                <li draggable="true">
+                    <div class="row container border border-danger">
+                        <div class="col-md-4">
+                            <img src="/assets/hamburger.png">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Item 2" aria-label="Username"
+                                    aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <img src="/assets/elipsis.png">
+                        </div>
+                    </div>
+                </li>
+                <li draggable="true">
+                    <div class="row container border border-danger">
+                        <div class="col-md-4">
+                            <img src="/assets/hamburger.png">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Item 3" aria-label="Username"
+                                    aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <img src="/assets/elipsis.png">
+                        </div>
+                    </div>
+                </li>
+                <!-- Add more list items as needed -->
+            </ul>
+        </div>
+    </div>
+
+    <!--Add section and add ingredients-->
+    <div class="container mb-3">
+        <div class="row border border-warning">
+            <div class="col-md-6 white-text">+ Section</div>
+            <div class="col-md-6 white-text">+ Ingredient </div>
+        </div>
+    </div>
+
+    <!--Method-->
+    <div class="container">
+        <h4>Method</h4>
+    </div>
+
+    <div class="container">
+        <div class="sortable-list">
+            <ul id="sortable">
+                <li draggable="true">
+                    <div class="row container">
+                        <div class="col-md-4">
+                            <img src="/assets/hamburger.png">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <textarea class="form-control" aria-label="With textarea"
+                                    placeholder="Text A"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <img src="/assets/elipsis.png">
+                        </div>
+                    </div>
+                </li>
+                <li draggable="true">
+                    <div class="row container">
+                        <div class="col-md-4">
+                            <img src="/assets/hamburger.png">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <textarea class="form-control" aria-label="With textarea"
+                                    placeholder="Text B"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <img src="/assets/elipsis.png">
+                        </div>
+                    </div>
+                </li>
+                <li draggable="true">
+                    <div class="row container">
+                        <div class="col-md-4">
+                            <img src="/assets/hamburger.png">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <textarea class="form-control" aria-label="With textarea"
+                                    placeholder="Text C"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <img src="/assets/elipsis.png">
+                        </div>
+                    </div>
+                </li>
+                <!-- Add more list items as needed -->
+            </ul>
+
+            <!--Add section and add ingredients-->
+            <div class="row container border border-warning">
+                <center class="white-text">+ Step</center>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.js"
+        integrity="sha512-luUnkeG+uabiT2pZdi5ME5uADvq+FpDs2fK5V0nVXrHCND9F077fKaE9W//oJvGnWSmwQmCau63A6s3um1NZmg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+        </script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
