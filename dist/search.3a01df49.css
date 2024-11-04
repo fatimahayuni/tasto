@@ -1,0 +1,189 @@
+body, .black-bg {
+  background-color: #201f24;
+}
+
+.drag-drop-area {
+  text-align: center;
+  cursor: pointer;
+  background-color: #f8f9fa;
+  border: 2px dashed #ccc;
+  padding: 50px;
+}
+
+.drag-drop-area.dragging {
+  background-color: #e9ecef;
+  border-color: #007bff;
+}
+
+.preview {
+  max-height: 200px;
+  margin-top: 20px;
+}
+
+.sortable-list ul {
+  padding: 0;
+  list-style-type: none;
+}
+
+.sortable-list li {
+  border: 1px solid #ddd;
+  align-items: center;
+  margin-bottom: 5px;
+  padding: 10px;
+  display: flex;
+}
+
+.sortable-list li .col {
+  flex: 1;
+  padding: 5px;
+}
+
+.sortable-list li .col:first-child, .sortable-list li .col:last-child {
+  width: 40px;
+}
+
+#more {
+  display: none;
+}
+
+.form-control {
+  color: #e9ecef;
+  background-color: #201f24;
+  border: 2px solid;
+  border-left-width: 0;
+  border-radius: 0 20px 20px 0;
+}
+
+.form-control::placeholder {
+  color: #858586;
+}
+
+.form-control:focus {
+  background-color: #201f24;
+  border-color: #e9ecef;
+  outline: none;
+}
+
+.input-group {
+  color: #e9ecef;
+  border-width: 2px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.input-group .form-control {
+  color: #e9ecef;
+  background-color: #201f24;
+  border: 2px solid;
+  border-left-width: 0;
+  border-radius: 0 20px 20px 0;
+}
+
+.input-group-text {
+  color: #e9ecef;
+  background-color: #201f24;
+  border-width: 2px 0 2px 2px;
+  border-radius: 20px 0 0 20px;
+}
+
+.inter {
+  font-optical-sizing: auto;
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: 100;
+}
+
+.montserrat {
+  font-optical-sizing: auto;
+  font-family: Montserrat, system-ui;
+  font-style: normal;
+  font-weight: 800;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #e9ecef;
+  font-family: Montserrat;
+  font-weight: 900;
+}
+
+.white-text {
+  color: #e9ecef;
+}
+
+p {
+  color: #e9ecef;
+  font-family: Inter;
+  font-weight: 400;
+}
+
+.search-bar {
+  width: 90%;
+}
+
+.image-container {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: flex;
+}
+
+img.standard-size {
+  object-fit: cover;
+  width: auto;
+  height: 200px;
+}
+
+img-container {
+  border: none;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.centered-image {
+  object-fit: contain;
+  border: none;
+  border-radius: 10px;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.card {
+  border: none;
+}
+
+.icon {
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  background: none;
+  border: none;
+  width: .5em;
+  height: .5em;
+  padding: 0 0 4em;
+  font-size: 1rem;
+}
+
+.button {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+}
+
+.counter-border-grey {
+  border: 2px solid #434141;
+  border-radius: 5px;
+}
+
+.grey-bottom-border {
+  border-bottom: 2px solid gray;
+}
+
+#cookingStepsContainer, #ingredientRow {
+  color: #e9ecef;
+}
+/*# sourceMappingURL=search.3a01df49.css.map */
