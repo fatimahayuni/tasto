@@ -15,18 +15,23 @@
 </head>
 
 <body>
-    <div class="container sticky-top border border-warning white-text">
-        <div class="row">
-            <div class="col-md-1">X</div>
-            <div class="col-md-5"></div>
-            <div class="col-md-5 row">
-                <div class="col-md-6">Save</div>
-                <div class="col-md-6">Publish</div>
+    <div class="container sticky-top white-text">
+        <div class="row d-flex align-items-end">
+            <!-- Left Arrow Column -->
+            <div class="col-md-1 d-flex justify-content-start">
+                <img src="/assets/left-arrow.png">
             </div>
-            <div class="col-md-1">...</div>
 
+            <!-- Right-aligned Content Column -->
+            <div class="col-md-11 d-flex justify-content-end">
+                <div class="d-flex">
+                    <div class="px-2">Save</div>
+                    <div class="px-2">Publish</div>
+                </div>
+            </div>
         </div>
     </div>
+
 
     <div class="container">
         <div class="row justify-content-center mt-5">
@@ -91,113 +96,84 @@
         <h3>Ingredients</h3>
     </div>
 
-    <div class="container">
+    <div class="container ingredients-elements">
         <div class="row sortable-list">
             <ul id="sortable">
                 <li draggable="true" class="list-item">
-                    <div class="row container border border-success">
-                        <div class="col-md-1 border border-danger">
+                    <div class="row">
+                        <div class="col-md-1 d-flex justify-content-center">
                             <img src="/assets/drag.png">
                         </div>
-                        <div class="col-md-2 border border-danger">
+                        <div class="col-md-2">
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" placeholder="2" aria-label="Username"
                                     aria-describedby="basic-addon1">
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <div class="input-group mb-3 border border-danger">
+                            <div class="input-group mb-3">
                                 <input type="text" class="form-control" placeholder="inches" aria-label="Username"
                                     aria-describedby="basic-addon1">
                             </div>
                         </div>
                         <div class="col-md-5">
-                            <div class="input-group mb-3 border border-danger">
+                            <div class="input-group mb-3">
                                 <input type="text" class="form-control" placeholder="ginger" aria-label="Username"
                                     aria-describedby="basic-addon1">
                             </div>
                         </div>
-                        <div class="col-md-1 border border-danger">
+                        <div class="col-md-1 d-flex justify-content-center">
                             <img src="/assets/delete.png">
                         </div>
                     </div>
                 </li>
-                <!-- Add more list items as needed -->
+                <div id="ingredient-container" class="mb-4">
+                    <!-- New ingredient containers will be added here -->
+                </div>
             </ul>
         </div>
     </div>
 
+
     <!--Add section and add ingredients-->
     <div class="container mb-3">
-        <div class="row border border-warning">
-            <div class="col-md-6 white-text">+ Ingredient </div>
+        <div class="row">
+            <div class="col-md-6 white-text"><a href="#" id="add-ingredient">+ Ingredient </a></div>
         </div>
     </div>
 
     <!--Method-->
     <div class="container">
-        <h4>Method</h4>
+        <h4>Steps</h4>
     </div>
 
     <div class="container">
         <div class="sortable-list">
             <ul id="sortable">
-                <li draggable="true">
-                    <div class="row container">
-                        <div class="col-md-4">
-                            <img src="/assets/drag.png">
-                        </div>
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                <textarea class="form-control" aria-label="With textarea"
-                                    placeholder="Text A"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <img src="/assets/delete.png">
-
+                <li class="d-flex justify-content-between" draggable="true">
+                    <div class="col-md-1">
+                        <img src="/assets/drag.png">
+                    </div>
+                    <div class="col-md-10">
+                        <div class="input-group">
+                            <textarea class="form-control" aria-label="With textarea" placeholder="Text A"></textarea>
                         </div>
                     </div>
-                </li>
-                <li draggable="true">
-                    <div class="row container">
-                        <div class="col-md-4">
-                            <img src="/assets/drag.png">
-                        </div>
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                <textarea class="form-control" aria-label="With textarea"
-                                    placeholder="Text B"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <img src="/assets/delete.png">
-                        </div>
+                    <div class="col-md-1 d-flex justify-content-end">
+                        <img src="/assets/delete.png">
                     </div>
                 </li>
-                <li draggable="true">
-                    <div class="row container">
-                        <div class="col-md-4">
-                            <img src="/assets/drag.png">
-                        </div>
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                <textarea class="form-control" aria-label="With textarea"
-                                    placeholder="Text C"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <img src="/assets/delete.png">
-                        </div>
-                    </div>
-                </li>
-                <!-- Add more list items as needed -->
+                <div id="step-container" class="mb-4">
+                    <!-- New step containers will be added here -->
+                </div>
             </ul>
+        </div>
+    </div>
 
-            <!--Add section and add ingredients-->
-            <div class="row container border border-warning">
-                <center class="white-text">+ Step</center>
-            </div>
+    <!--Add new step section-->
+    <div class="container mb-3">
+        <div class="row">
+            <div class="col-md-6 white-text" id="step-container"><a href="#" id="add-step">+ Step </a></div>
         </div>
     </div>
 
@@ -207,7 +183,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer">
         </script>
 
-    <script src="script.js"></script>
+    <script src="create.js"></script>
 </body>
 
 </html>
