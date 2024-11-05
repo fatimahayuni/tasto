@@ -127,10 +127,6 @@ p {
 
 }
 
-.img-fluid {
-    max-height: 30px;
-    object-fit: contain;
-}
 
 
 img {
@@ -141,12 +137,6 @@ img {
 .list-item {
     display: flex;
     justify-content: center;
-    align-items: center;
-}
-
-.ingredients-elements .row {
-    display: flex;
-    justify-content: space-evenly;
     align-items: center;
 }
 

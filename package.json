@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@uploadcare/file-uploader": "^1.10.0",
+    "@uploadcare/react-uploader": "^1.1.0"
+  }
+}
