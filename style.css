@@ -77,32 +77,26 @@ body {
 
 .input-group {
     border-radius: 20px;
-    /* 20px radius */
     overflow: hidden;
-    /* Ensure no overflow from rounded corners */
     border-width: 2px;
-    /* Increase border thickness */
     color: #e9ecef;
 }
 
+
 .input-group .form-control {
-    background-color: #201F24;
-    color: #e9ecef;
-    border: 2px solid;
-    border-radius: 0 20px 20px 0;
-    border-left-width: 0;
+    background-color: #e9ecef;
+    color: #201F24;
+    border: 2px solid #e9ecef;
 }
 
 
 .input-group-text {
     color: #e9ecef;
-    background-color: #201F24;
+    background-color: #e9ecef;
     border-radius: 20px 0 0 20px;
-    border-width: 2px;
+    border: 2px solid #e9ecef;
     border-right-width: 0;
 }
-
-
 
 /* 100-900 */
 .inter {
@@ -250,6 +244,8 @@ img-container {
 
 .navbar-color {
     background-color: #61a6ab !important;
+    font-size: 1.25rem;
+
 }
 
 .li-black-bg {
@@ -258,7 +254,11 @@ img-container {
 
 footer {
     background-color: #fff;
-    /* Explicitly setting white background */
     padding: 0px;
-    /* Adjust the padding to suit your design */
+}
+
+.navbar-nav .nav-link:hover {
+    font-size: 1.25rem;
+    color: pink;
+    text-decoration: none;
 }

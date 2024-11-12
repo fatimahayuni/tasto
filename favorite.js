@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", async function () {
+
     // Fetch and combine recipes
     const tastoRecipes = await fetchRecipesFromTastoBin();
     console.log("tastoRecipes", tastoRecipes);
@@ -94,24 +95,73 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
 
         // Attach the event listener to all delete icons
+        //     const deleteIcons = document.querySelectorAll('.delete-icon');
+        //     deleteIcons.forEach(icon => {
+        //         icon.addEventListener('click', async (e) => {
+        //             e.preventDefault();
+        //             const recipeTitle = icon.getAttribute('data-title');
+        //             const source = icon.getAttribute('data-source');
+
+        //             // Call the appropriate delete function based on the source
+        //             if (source === 'mealdb') {
+        //                 await deleteMealdbRecipe(recipeTitle);
+        //             } else if (source === 'tasto') {
+        //                 await deleteTastoRecipe(recipeTitle);
+        //             }
+
+        //             // Remove the recipe card from the UI
+        //             icon.closest('.col').remove();
+        //         });
+        //     }
+        // );
+
+        // Attach the event listener to all delete icons
         const deleteIcons = document.querySelectorAll('.delete-icon');
         deleteIcons.forEach(icon => {
             icon.addEventListener('click', async (e) => {
-                e.preventDefault();  // Prevent page reload
+                e.preventDefault(); // Prevent page reload
                 const recipeTitle = icon.getAttribute('data-title');
                 const source = icon.getAttribute('data-source');
 
-                // Call the appropriate delete function based on the source
-                if (source === 'mealdb') {
-                    await deleteMealdbRecipe(recipeTitle);
-                } else if (source === 'tasto') {
-                    await deleteTastoRecipe(recipeTitle);
-                }
+                try {
+                    // Show SweetAlert confirmation dialog
+                    const confirmation = await Swal.fire({
+                        title: "Are you sure?",
+                        text: "You won't be able to revert this!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes, delete it!"
+                    });
 
-                // Remove the recipe card from the UI
-                icon.closest('.col').remove();
+                    // If the user confirms the deletion
+                    if (confirmation.isConfirmed) {
+                        // Call the appropriate delete function based on the source
+                        if (source === 'mealdb') {
+                            await deleteMealdbRecipe(recipeTitle);
+                        } else if (source === 'tasto') {
+                            await deleteTastoRecipe(recipeTitle);
+                        }
+
+                        // Remove the recipe card from the UI
+                        icon.closest('.col').remove();
+
+                        // Show success message after deletion
+                        await Swal.fire({
+                            title: "Deleted!",
+                            text: "The recipe has been deleted.",
+                            icon: "success",
+                            confirmButtonColor: "#3085d6"
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error deleting recipe:", error);
+                }
             });
         });
+
+
     }
 
     async function deleteMealdbRecipe(recipeTitle) {

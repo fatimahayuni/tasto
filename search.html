@@ -15,7 +15,7 @@
 </head>
 
 <body>
-  <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary navbar-color">
+  <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary navbar-color montserrat">
     <div class="container-fluid">
       <a class="navbar-brand" href="search.html"><img src="assets/logo.png" width="100px" height="100px"></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -31,15 +31,27 @@
             <a class="nav-link" href="/create.html">Create Recipe</a>
           </li>
         </ul>
-        <form class="d-flex" role="search">
+
+
+        <!-- <form class="d-flex" role="search">
           <input class="form-control me-2 white-text" type="search" placeholder="Search Tasto" aria-label="Search"
             id="searchTerms">
+        </form> -->
+
+        <form class="d-flex" role="search">
+          <div class="input-group">
+            <span class="input-group-text" id="basic-addon1">
+              <img src="assets/search.png" alt="Search Icon" class="small-size">
+            </span>
+            <input class="form-control" type="search" placeholder="Search Tasto" aria-label="Search" id="searchTerms">
+          </div>
         </form>
+
+
       </div>
     </div>
   </nav>
   <div class="container mt-5">
-    WAHT IS THIS?
 
     <!--Recipe cards are rendered here-->
     <div id="output" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center"></div>
@@ -48,7 +60,7 @@
     integrity="sha512-luUnkeG+uabiT2pZdi5ME5uADvq+FpDs2fK5V0nVXrHCND9F077fKaE9W//oJvGnWSmwQmCau63A6s3um1NZmg=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top bg-light">
+  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top bg-light mt-5">
     <ul class="nav list-unstyled d-flex ms-auto">
       <li class="ms-3">
         <a class="text-muted" href="#"><svg class="bi" width="24" height="24"> <img

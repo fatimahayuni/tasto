@@ -29,16 +29,20 @@
                 </ul>
 
                 <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search Tasto" aria-label="Search"
-                        id="searchTerms">
-
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1">
+                            <img src="assets/search.png" alt="Search Icon" class="small-size">
+                        </span>
+                        <input class="form-control" type="search" placeholder="Search Tasto" aria-label="Search"
+                            id="searchTerms">
+                    </div>
                 </form>
             </div>
         </div>
     </nav>
-    <div class="container d-flex justify-content-end"><img src="/assets/heart-empty.png" width="40px" alt="heart-empty"
+    <!-- <div class="container d-flex justify-content-end"><img src="/assets/heart-empty.png" width="40px" alt="heart-empty"
             id="favoriteButton">
-    </div>
+    </div> -->
     <div class="container title-container">
         <h1 class="montserrat" id="recipeTitle"></h1>
     </div>
@@ -94,8 +98,8 @@
         <button id="saveButton" class="btn btn-primary">Save</button>
     </div>
 
-    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top bg-light">
-        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top bg-light mt-5">
+        <ul class="nav list-unstyled d-flex ms-auto">
             <li class="ms-3">
                 <a class="text-muted" href="#"><svg class="bi" width="24" height="24"> <img
                             src="/assets/Black-icon-Twitter-logo-transparent-PNG.png" class="icon-size"

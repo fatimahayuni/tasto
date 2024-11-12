@@ -16,7 +16,7 @@ body {
     background-color: #e9ecef;
 }
 
-/* Sortable ingredients list*/
+/* Sortable ingredients list */
 .sortable-list ul {
     list-style-type: none;
     padding: 0;
@@ -42,16 +42,11 @@ body {
     width: 40px;
 }
 
-#more {
-    display: none;
-}
-
 .form-control {
     background-color: #e9ecef;
     color: #201F24;
-    border: 0px solid;
-    border-radius: 20px 20px 20px 20px;
-    border-left-width: 0;
+    border: 0;
+    border-radius: 5px;
 }
 
 .form-control::placeholder {
@@ -64,37 +59,34 @@ body {
     outline: none;
 }
 
+.input-group {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
 .input-group .form-control {
-    background-color: #201F24;
-    color: white;
+    background-color: #e9ecef;
+    color: #201F24;
     border: 2px solid #e9ecef;
 }
 
-
 .input-group-text {
     color: #e9ecef;
-    background-color: #201F24;
+    background-color: #e9ecef;
     border-radius: 20px 0 0 20px;
     border: 2px solid #e9ecef;
     border-right-width: 0;
 }
 
-
-
-/* 100-900 */
+/* Font styles */
 .inter {
     font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
     font-weight: 100;
-    font-style: normal;
 }
 
-/* 100-900 */
 .montserrat {
     font-family: "Montserrat", system-ui;
-    font-optical-sizing: auto;
     font-weight: 800;
-    font-style: normal;
 }
 
 h1,
@@ -112,7 +104,6 @@ h3 {
     font-family: 'Montserrat', sans-serif;
 }
 
-
 .white-text {
     color: #e9ecef;
 }
@@ -120,7 +111,7 @@ h3 {
 p {
     font-family: "Inter";
     font-weight: 400;
-    color: #e9ecef
+    color: #e9ecef;
 }
 
 .image-container {
@@ -141,7 +132,12 @@ img.icon-size {
     width: 50px;
     height: 50px;
     object-fit: cover;
+}
 
+img.small-size {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
 }
 
 .list-item {
@@ -150,13 +146,15 @@ img.icon-size {
     align-items: center;
 }
 
-.container.sticky-top {
-    background-color: #201F24;
-    /* Adjust to your desired color */
-    opacity: 1;
-    /* Ensures full opacity */
-}
-
 .navbar-color {
     background-color: #61a6ab !important;
+}
+
+#add-ingredient,
+#add-step {
+    color: #fa8492;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #e06f80 !important;
 }
