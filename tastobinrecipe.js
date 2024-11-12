@@ -169,7 +169,6 @@ async function handleSaveButtonClick(recipe) {
   const saveButton = document.querySelector("#saveButton");
   if (saveButton) {
     saveButton.addEventListener("click", async () => {
-      console.log("button clicked", saveButton);
       await saveRecipeToJSONBin(recipe);
     });
   }
@@ -214,7 +213,13 @@ async function saveRecipeToJSONBin(recipe) {
 
       if (updateResponse.status === 200) {
         console.log('Recipe updated successfully!');
-        alert('Recipe saved successfully!');
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Recipe saved successfully!',
+          showConfirmButton: false,
+          timer: 1500
+        });
       } else {
         console.error('Failed to save recipe.');
       }

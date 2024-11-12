@@ -9,7 +9,13 @@ document.querySelector("#saveButton").addEventListener("click", async () => {
     if (currentRecipe && currentRecipe.title) {
         const formattedRecipe = formatRecipeForJsonBin(currentRecipe);
         await saveRecipeToJsonBin(formattedRecipe);
-        alert("Recipe saved successsfully!")
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Recipe saved successfully!',
+            showConfirmButton: false,
+            timer: 1500
+        });
     } else {
         console.error("No recipe to save.");
     }
@@ -291,9 +297,7 @@ async function saveRecipeToJsonBin(recipe) {
         });
 
         if (updateResponse.ok) {
-            console.log("Recipe saved/updated successfully");
         } else {
-            console.error("Failed to save recipe", await updateResponse.text());
         }
     } catch (error) {
         console.error("Error saving recipe to JSON Bin:", error);
