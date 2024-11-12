@@ -155,7 +155,7 @@ p {
 }
 
 img.standard-size {
-    width: auto;
+    width: 100%;
     height: 200px;
     object-fit: cover;
 
@@ -196,54 +196,68 @@ img-container {
     border: none;
 }
 
-.icon {
-    background: none;
-    color: inherit;
-    border: none;
-    padding: 0 0 4em;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
-    width: 0.5em;
-    height: 0.5em;
-    font-size: 1rem;
+.card-image {
+    display: flex;
+    width: 100%;
+    overflow: hidden;
 }
 
-.button {
-    width: 40px;
-    height: 40px;
-    padding: 0px;
-}
+.card-img-top {
+    object-fit: cover;
+    /* Ensures the image covers the container */
+    width: 100%;
+    /* Ensure the image takes full width */
+    height: 100%;
+    /* Ensure the image takes full height */
 
-.counter-border-grey {
-    border-radius: 5px;
-    border: 2px solid rgb(67, 65, 65);
+    .icon {
+        background: none;
+        color: inherit;
+        border: none;
+        padding: 0 0 4em;
+        font: inherit;
+        cursor: pointer;
+        outline: inherit;
+        width: 0.5em;
+        height: 0.5em;
+        font-size: 1rem;
+    }
 
-}
+    .button {
+        width: 40px;
+        height: 40px;
+        padding: 0px;
+    }
 
-/* .grey-bottom-border {
+    .counter-border-grey {
+        border-radius: 5px;
+        border: 2px solid rgb(67, 65, 65);
+
+    }
+
+    /* .grey-bottom-border {
     border-bottom: 2px solid grey;
 } */
 
-#cookingStepsContainer {
-    color: #e9ecef;
-}
+    #cookingStepsContainer {
+        color: #e9ecef;
+    }
 
-#ingredientRow {
-    color: #e9ecef;
-}
+    #ingredientRow {
+        color: #e9ecef;
+    }
 
-.list-group-item {
-    background-color: #201F24;
-    color: #e9ecef;
-    border: 0px solid;
-    border-radius: 0px !important;
-}
+    .list-group-item {
+        background-color: #201F24;
+        color: #e9ecef;
+        border: 0px solid;
+        border-radius: 0px !important;
+    }
 
-.navbar-color {
-    background-color: #61a6ab !important;
-}
+    .navbar-color {
+        background-color: #61a6ab !important;
+    }
 
-.li-black-bg {
-    background-color: #000000;
-}
+    .li-black-bg {
+        background-color: #000000;
+    }

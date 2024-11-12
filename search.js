@@ -67,7 +67,6 @@ async function searchTastoBinRecipe(searchTerms) {
     }
 }
 
-// Display recipes
 function displayRecipes(recipe) {
     const outputElement = document.querySelector("#output");
     outputElement.innerHTML = '';
@@ -110,10 +109,10 @@ function displayRecipes(recipe) {
 
             cardElement.innerHTML = `
             <a href="${recipeLink}" target="_blank" class="text-decoration-none">
-                <div class="card card-image h-100">
+                <div class="card card-image card-img-top h-200 black-bg">
                 <img src="${imageUrl}" class="card-img-top standard-size" alt="${recipeName}">
                 <div class="card-body black-bg">
-                    <h5 class="card-food-name white-text">${recipeName}</h5>
+                    <h5 class="white-text">${recipeName}</h5>
                     <p class="card-cuisine">${cuisineOrigin}</p>
                 </div>
                 <div class="black-bg">
