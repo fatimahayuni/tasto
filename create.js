@@ -1,52 +1,90 @@
-const JSON_BIN_BASE_URL = "https://api.jsonbin.io/v3";
-const JSON_BIN_ID = "672a3444acd3cb34a8a31e93";
-
-async function loadRecipes() {
-    try {
-        const response = await axios.get(`${JSON_BIN_BASE_URL}/b/${JSON_BIN_ID}`);
-        console.log(response.data);
-        return response.data.record;
-    } catch (error) {
-        console.error("Failed to load recipes:", error);
-    }
-}
-
-
-// Wait for DOM to load
-document.addEventListener('DOMContentLoaded', async function () {
-    let recipes = await loadRecipes()
-    console.log('Recipes', recipes);
+document.addEventListener('DOMContentLoaded', function () {
 
     const saveButton = document.querySelector('#save-btn');
 
-    // Add click event listener for the save button
+    const uploaderCtx = document.querySelector('#uploaderctx');
+    console.log("uploaderCtx", uploaderCtx);
+
+    // Get reference to the API instance
+    const api = uploaderCtx.getAPI()
+    console.log("api: ", api);
+
+    // Use the API methods
+    const collectionState = api.getOutputCollectionState()
+
+    // Add event listener for the file upload success event
+    uploaderCtx.addEventListener('file-upload-success', async (e) => {
+        const uuid = e.detail.uuid;
+
+        // Set a hidden input to pass UUID in form
+        document.getElementById('image-url').value = uuid;
+
+        try {
+            // Retrieve and display the image URL
+            const imageUrl = await getImageUrl(uuid);
+            document.getElementById('image-url').value = imageUrl;
+
+        } catch (error) {
+            console.error("Error getting image URL:", error);
+        }
+
+    })
+
     saveButton.addEventListener('click', async (event) => {
         event.preventDefault();
         console.log("Save button clicked.");
 
-        // Collect data from each part of the form
+        const imageUrl = document.getElementById('image-url').value;
         const title = document.getElementById('recipe-title').value;
-        const description = document.getElementById('recipe-description').value;
+        const cuisineOrigin = document.getElementById('cuisine-origin').value;
         const serves = document.getElementById('serves-number').value;
-        const cookTime = document.getElementById('cook-time').value;
 
-        // Gather ingredients data
         const ingredients = Array.from(document.querySelectorAll('#sortable-ingredients li')).map(li => ({
             quantity: li.querySelector('input[aria-label="Quantity"]').value,
             unit: li.querySelector('input[aria-label="Unit"]').value,
             name: li.querySelector('input[aria-label="Ingredient Name"]').value
         }));
 
-        // Gather steps data
         const steps = Array.from(document.querySelectorAll('#sortable-steps li')).map(li =>
             li.querySelector('textarea').value
         );
 
-        // Log the collected data
-        console.log({ title, description, serves, cookTime, ingredients, steps });
+        const recipeData = { imageUrl, title, cuisineOrigin, serves, ingredients, steps };
+        console.log("recipeData", recipeData);
+
+        try {
+            // Step 1: Fetch the existing data from the bin
+            const existingDataResponse = await axios.get('https://api.jsonbin.io/v3/b/672e286fe41b4d34e450e382', {
+                headers: {
+                    'X-Master-Key': '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6'
+                }
+            });
+
+            const existingRecipes = existingDataResponse.data.record.recipes || []; // Get the existing recipes or initialize an empty array if none exist
+
+            // Step 2: Append the new recipe to the existing recipes array
+            existingRecipes.push(recipeData);
+
+            // Step 3: Send the updated data back to JSON Bin
+            const response = await axios.put('https://api.jsonbin.io/v3/b/672e286fe41b4d34e450e382', {
+                recipes: existingRecipes // Update the entire record with the new array
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6',
+                    'X-Bin-Name': 'tasto',
+                    'X-Bin-Private': 'false'
+                }
+            });
+
+            console.log("Recipe saved successfully:", response.data);
+            alert("Recipe saved successfully!");
+        } catch (error) {
+            console.error("Error saving recipe:", error);
+            alert("Failed to save recipe.");
+        }
     });
 
-    // Function to add an ingredient container with the exact structure
     function addIngredientContainer() {
         const ingredientContainer = document.getElementById('sortable-ingredients');
         const newIngredientLi = document.createElement('li');
@@ -76,17 +114,15 @@ document.addEventListener('DOMContentLoaded', async function () {
         ingredientContainer.appendChild(newIngredientLi);
     }
 
-    // Function to remove an ingredient container
-    window.removeIngredient = function (element) { // Make this function global
+    window.removeIngredient = function (element) {
         const ingredientLi = element.closest('li');
         if (ingredientLi) {
             ingredientLi.remove();
         }
     };
 
-    // Function to add a step container with the exact structure
     function addStepContainer() {
-        const stepContainer = document.getElementById('sortable-steps'); // Update this line
+        const stepContainer = document.getElementById('sortable-steps');
         const newStepLi = document.createElement('li');
         newStepLi.draggable = true;
         newStepLi.classList.add('d-flex', 'justify-content-between');
@@ -104,26 +140,40 @@ document.addEventListener('DOMContentLoaded', async function () {
         stepContainer.appendChild(newStepLi);
     }
 
-    // Function to remove a step container
-    window.removeStep = function (element) { // Make this function global
+    window.removeStep = function (element) {
         const stepLi = element.closest('li');
         if (stepLi) {
             stepLi.remove();
         }
     };
 
-    // Event listener for the "+ Ingredient" link
     document.getElementById('add-ingredient').addEventListener('click', function (event) {
         event.preventDefault();
         addIngredientContainer();
     });
 
-    // Event listener for the "+ Step" link
     document.getElementById('add-step').addEventListener('click', function (event) {
         event.preventDefault();
         addStepContainer();
     });
 });
+
+async function getImageUrl(uuid) {
+    const publicKey = 'b2d8b3ed8d9768dfcbae';
+    const secretKey = '2be26da0b270789cd1e6';
+
+    const response = await axios.get(`https://api.uploadcare.com/files/${uuid}/`, {
+        headers: {
+            'Authorization': `Uploadcare.Simple ${publicKey}:${secretKey}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const imageUrl = response.data.original_file_url;
+    console.log("Image URL", imageUrl);
+    return imageUrl
+};
+
 
 
 

@@ -1,5 +1,6 @@
 body {
     background-color: #201F24;
+    padding-top: 100px;
 }
 
 .drag-drop-area {
@@ -45,13 +46,17 @@ body {
     display: none;
 }
 
-.form-control {
+/* .form-control {
     background-color: #201F24;
     color: #e9ecef;
-}
+} */
 
-.form-control::placeholder {
-    color: #858586;
+.form-control {
+    background-color: #e9ecef;
+    color: #e9ecef;
+    border: 0px solid;
+    border-radius: 20px 20px 20px 20px;
+    border-left-width: 0;
 }
 
 .form-control:focus {
@@ -105,6 +110,11 @@ h6 {
     color: #e9ecef;
 }
 
+h3 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+
 .white-text {
     color: #e9ecef;
 }
@@ -115,7 +125,6 @@ p {
     color: #e9ecef
 }
 
-
 .image-container {
     width: 100%;
     height: auto;
@@ -123,11 +132,7 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-
-
 }
-
-
 
 img {
     width: 20px;
@@ -145,4 +150,8 @@ img {
     /* Adjust to your desired color */
     opacity: 1;
     /* Ensures full opacity */
+}
+
+.navbar-color {
+    background-color: #61a6ab !important;
 }

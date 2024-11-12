@@ -7,33 +7,59 @@
     <title>Create a New Recipe</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="create.css">
+
     <script src="create.js" type="module"></script>
 </head>
 
 <body>
+    <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary navbar-color">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Tasto</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 justify-content-center">
+                    <li class="nav-item ">
+                        <a class="nav-link active" aria-current="page" href="/favorite.html">Favorite Recipe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/create.html">Create Recipe</a>
+                    </li>
+                </ul>
 
-    <div class="container sticky-top white-text">
-        <div class="row d-flex align-items-end">
-            <div class="col-md-1 d-flex justify-content-start"><img src="/assets/left-arrow.png" alt="left-arrow"></div>
-            <div class="col-md-11 d-flex justify-content-end">
-                <div class="d-flex">
-                    <button class="px-2" id="save-btn" role="button" style="cursor: pointer;">Save</button>
-                </div>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search Tasto" aria-label="Search"
+                        id="searchTerms">
+
+                </form>
             </div>
         </div>
-    </div>
+    </nav>
+
+    <div class="container py-4 d-flex justify-content-center">
+        <div class="col-md-6">
+            <link rel="stylesheet"
+                href="https://cdn.jsdelivr.net/npm/@uploadcare/file-uploader@1/web/uc-file-uploader-minimal.min.css">
+            <script type="module">
+                import * as UC from 'https://cdn.jsdelivr.net/npm/@uploadcare/file-uploader@1/web/uc-file-uploader-minimal.min.js';
+                UC.defineComponents(UC);
+            </script>
+
+            <uc-config pubkey="b2d8b3ed8d9768dfcbae" ctx-name="my-uploader"></uc-config>
+
+            <uc-upload-ctx-provider id="uploaderctx" ctx-name="my-uploader">
+            </uc-upload-ctx-provider>
+
+            <uc-file-uploader-minimal ctx-name="my-uploader"></uc-file-uploader-minimal>
+
+
+        </div>
+        <input type="hidden" id="image-url" name="image-uuid">
     </div>
 
-    <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-6">
-                <div id="drag-drop-area" class="drag-drop-area">
-                    <!-- Upload area has been removed -->
-                </div>
-            </div>
-            <!-- Preview area has been removed -->
-        </div>
-    </div>
 
     <div class="container">
         <div class="input-group mb-3">
@@ -41,94 +67,115 @@
                 aria-label="Recipe Title" aria-describedby="basic-addon1">
         </div>
     </div>
-
-    <div class="container mb-3">
-        <div class="input-group">
-            <textarea class="form-control" id="recipe-description" aria-label="With textarea"
-                placeholder="Share a little more about this dish..."></textarea>
-        </div>
-    </div>
-
     <div class="container">
         <div class="row">
-            <div class="col-md-6 white-text">Serves</div>
-            <div class="col-md-6">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="2 people" aria-label="Serves"
-                        id="serves-number">
-                </div>
+            <div class="col-md-6 white-text">
+                Cuisine Origin
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 white-text">Cook Time</div>
             <div class="col-md-6">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="1 hr 30 mins" aria-label="Cook Time"
-                        id="cook-time">
+                    <input type="text" class="form-control" id="cuisine-origin" placeholder="Italian"
+                        aria-label="Cuisine Origin">
                 </div>
             </div>
         </div>
     </div>
-
     <div class="container">
-        <h3>Ingredients</h3>
-        <div class="sortable-list">
-            <ul id="sortable-ingredients">
-                <li class="d-flex justify-content-between" draggable="true">
-                    <div class="col-md-1"><img src="/assets/drag.png" alt="drag"></div>
-                    <div class="col-md-2">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="2" aria-label="Quantity"
-                                id="ingredient-quantity">
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="inches" aria-label="Unit"
-                                id="ingredient-measurement">
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="ginger" aria-label="Ingredient Name"
-                                id="ingredient-name">
-                        </div>
-                    </div>
-                    <div class="col-md-1 d-flex justify-content-end"><img src="/assets/delete.png" alt="delete"></div>
-                </li>
-            </ul>
-            <div id="ingredient-container" class="mb-4"></div>
-            <div class="mb-3">
-                <a href="#" id="add-ingredient">+ Ingredient</a>
+        <div class="row">
+            <div class="col-md-6 white-text">
+                Serves
+            </div>
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="2" aria-label="Serves" id="serves-number">
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="container">
-        <h3>Steps</h3>
-        <div class="sortable-list">
-            <ul id="sortable-steps">
-                <li class="d-flex justify-content-between" draggable="true">
-                    <div class="col-md-1"><img src="/assets/drag.png" alt="drag"></div>
-                    <div class="col-md-10">
-                        <div class="input-group">
-                            <textarea class="form-control" aria-label="With textarea" placeholder="Step details..."
-                                id="step-description"></textarea>
+        <div class="container">
+            <h3>Ingredients</h3>
+            <div class="sortable-list">
+                <ul id="sortable-ingredients">
+                    <li class="d-flex justify-content-between" draggable="true">
+                        <div class="col-md-1"><img src="/assets/drag.png" alt="drag"></div>
+                        <div class="col-md-2">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="2" aria-label="Quantity"
+                                    id="ingredient-quantity">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-1 d-flex justify-content-end"><img src="/assets/delete.png" alt="delete"></div>
-                </li>
-            </ul>
-            <div id="step-container" class="mb-4"></div>
-            <div class="mb-3">
-                <a href="#" id="add-step">+ Step</a>
+                        <div class="col-md-2">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="inches" aria-label="Unit"
+                                    id="ingredient-measurement">
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="ginger"
+                                    aria-label="Ingredient Name" id="ingredient-name">
+                            </div>
+                        </div>
+                        <div class="col-md-1 d-flex justify-content-end"><img src="/assets/delete.png" alt="delete">
+                        </div>
+                    </li>
+                </ul>
+                <div id="ingredient-container" class="mb-4"></div>
+                <div class="mb-3">
+                    <a href="#" id="add-ingredient">+ Ingredient</a>
+                </div>
             </div>
         </div>
+        <div class="container">
+            <h3>Steps</h3>
+            <div class="sortable-list">
+                <ul id="sortable-steps">
+                    <li class="d-flex justify-content-between" draggable="true">
+                        <div class="col-md-1"><img src="/assets/drag.png" alt="drag"></div>
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <textarea class="form-control" aria-label="With textarea" placeholder="Step details..."
+                                    id="step-description"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-1 d-flex justify-content-end"><img src="/assets/delete.png" alt="delete">
+                        </div>
+                    </li>
+                </ul>
+                <div id="step-container" class="mb-4"></div>
+                <div class="mb-3">
+                    <a href="#" id="add-step">+ Step</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-11 d-flex justify-content-end">
+            <div class="d-flex">
+                <button class="px-2 btn btn-primary" id="save-btn" role="button">Save</button>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js"
+            integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </div>
-    <!-- axios -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js"
-        integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top bg-light">
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3">
+                <a class="text-muted" href="#"><svg class="bi" width="24" height="24"> <img
+                            src="/assets/Black-icon-Twitter-logo-transparent-PNG.png" class="icon-size"
+                            alt="Black-icon-Twitter-logo-transparent-PNG"></svg></a>
+            </li>
+            <li class="ms-3">
+                <a class="text-muted" href="#"><img src="/assets/Black-icon-Instagram-logo-transparent-PNG.png"
+                        class="icon-size" alt="Black-icon-Instagram-logo-transparent-PNG"></a>
+            </li>
+            <li class="ms-3">
+                <a class="text-muted" href="#"><svg class="bi" width="24" height="24">
+                        <use xlink:href="#facebook"></use>
+                    </svg></a>
+            </li>
+        </ul>
+    </footer>
 </body>
 
 </html>

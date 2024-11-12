@@ -1,5 +1,6 @@
 body {
     background-color: #201F24;
+    padding-top: 100px;
 }
 
 .black-bg {
@@ -45,12 +46,10 @@ body {
 
 .sortable-list li .col:first-child {
     width: 40px;
-    /* Adjust size as needed */
 }
 
 .sortable-list li .col:last-child {
     width: 40px;
-    /* Adjust size as needed */
 }
 
 #more {
@@ -59,10 +58,10 @@ body {
 
 
 .form-control {
-    background-color: #201F24;
+    background-color: #e9ecef;
     color: #e9ecef;
-    border: 2px solid;
-    border-radius: 0 20px 20px 0;
+    border: 0px solid;
+    border-radius: 20px 20px 20px 20px;
     border-left-width: 0;
 }
 
@@ -153,13 +152,25 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-
-
 }
 
 img.standard-size {
     width: auto;
     height: 200px;
+    object-fit: cover;
+
+}
+
+img.small-size {
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+
+}
+
+img.icon-size {
+    width: 50px;
+    height: 50px;
     object-fit: cover;
 
 }
@@ -210,9 +221,9 @@ img-container {
 
 }
 
-.grey-bottom-border {
+/* .grey-bottom-border {
     border-bottom: 2px solid grey;
-}
+} */
 
 #cookingStepsContainer {
     color: #e9ecef;
@@ -220,4 +231,19 @@ img-container {
 
 #ingredientRow {
     color: #e9ecef;
+}
+
+.list-group-item {
+    background-color: #201F24;
+    color: #e9ecef;
+    border: 0px solid;
+    border-radius: 0px !important;
+}
+
+.navbar-color {
+    background-color: #61a6ab !important;
+}
+
+.li-black-bg {
+    background-color: #000000;
 }

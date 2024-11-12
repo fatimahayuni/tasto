@@ -1,8 +1,8 @@
 let url = 'https://api.edamam.com/doc/open-api/recipe-search-v2.json';
 
 async function loadData() {
-    const response = await axios.get(url);
-    console.log(response)
+	const response = await axios.get(url);
+	console.log(response)
 }
 
 
@@ -22,7 +22,7 @@ sortableList.addEventListener(
 			e.target.style.display =
 				"none";
 		}, 0);
-});
+	});
 
 sortableList.addEventListener(
 	"dragend",
@@ -31,7 +31,7 @@ sortableList.addEventListener(
 			e.target.style.display = "";
 			draggedItem = null;
 		}, 0);
-});
+	});
 
 sortableList.addEventListener(
 	"dragover",
@@ -47,12 +47,14 @@ sortableList.addEventListener(
 		if (afterElement == null) {
 			sortableList.appendChild(
 				draggedItem
-			);} 
+			);
+		}
 		else {
 			sortableList.insertBefore(
 				draggedItem,
 				afterElement
-			);}
+			);
+		}
 	});
 
 const getDragAfterElement = (
@@ -75,10 +77,12 @@ const getDragAfterElement = (
 				return {
 					offset: offset,
 					element: child,
-				};} 
+				};
+			}
 			else {
 				return closest;
-			}},
+			}
+		},
 		{
 			offset: Number.NEGATIVE_INFINITY,
 		}
