@@ -255,3 +255,10 @@ img-container {
 .li-black-bg {
     background-color: #000000;
 }
+
+footer {
+    background-color: #fff;
+    /* Explicitly setting white background */
+    padding: 0px;
+    /* Adjust the padding to suit your design */
+}
