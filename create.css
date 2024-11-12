@@ -46,25 +46,23 @@ body {
     display: none;
 }
 
-/* .form-control {
-    background-color: #201F24;
-    color: #e9ecef;
-} */
-
 .form-control {
     background-color: #e9ecef;
-    color: #e9ecef;
+    color: #201F24;
     border: 0px solid;
     border-radius: 20px 20px 20px 20px;
     border-left-width: 0;
 }
 
+.form-control::placeholder {
+    color: #858586;
+}
+
 .form-control:focus {
-    background-color: #201F24;
+    background-color: #e9ecef !important;
     border-color: #e9ecef;
     outline: none;
 }
-
 
 .input-group .form-control {
     background-color: #201F24;
@@ -135,8 +133,8 @@ p {
 }
 
 img {
-    width: 20px;
-    height: 20px;
+    width: 100px;
+    height: 100px;
 }
 
 .list-item {

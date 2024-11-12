@@ -92,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function () {
         newIngredientLi.classList.add('list-item', 'd-flex', 'justify-content-between');
 
         newIngredientLi.innerHTML = `
-            <div class="col-md-1"><img src="/assets/drag.png" alt="drag"></div>
             <div class="col-md-2">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" placeholder="2" aria-label="Quantity">
@@ -108,7 +107,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     <input type="text" class="form-control" placeholder="ginger" aria-label="Ingredient Name">
                 </div>
             </div>
-            <div class="col-md-1 d-flex justify-content-end"><img src="/assets/delete.png" alt="delete" onclick="removeIngredient(this)"></div>
         `;
 
         ingredientContainer.appendChild(newIngredientLi);
