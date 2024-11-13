@@ -1,5 +1,6 @@
 body {
     background-color: #201F24;
+    padding-top: 100px;
 }
 
 .drag-drop-area {
@@ -15,7 +16,7 @@ body {
     background-color: #e9ecef;
 }
 
-/* Sortable ingredients list*/
+/* Sortable ingredients list */
 .sortable-list ul {
     list-style-type: none;
     padding: 0;
@@ -41,13 +42,11 @@ body {
     width: 40px;
 }
 
-#more {
-    display: none;
-}
-
 .form-control {
-    background-color: #201F24;
-    color: #e9ecef;
+    background-color: #e9ecef;
+    color: #201F24;
+    border: 0;
+    border-radius: 5px;
 }
 
 .form-control::placeholder {
@@ -55,54 +54,60 @@ body {
 }
 
 .form-control:focus {
-    background-color: #201F24;
+    background-color: #e9ecef !important;
     border-color: #e9ecef;
     outline: none;
 }
 
+.input-group {
+    border-radius: 20px;
+    overflow: hidden;
+}
 
 .input-group .form-control {
-    background-color: #201F24;
-    color: white;
+    background-color: #e9ecef;
+    color: #201F24;
     border: 2px solid #e9ecef;
 }
 
-
 .input-group-text {
     color: #e9ecef;
-    background-color: #201F24;
+    background-color: #e9ecef;
     border-radius: 20px 0 0 20px;
     border: 2px solid #e9ecef;
     border-right-width: 0;
 }
 
-
-
-/* 100-900 */
+/* Font styles */
 .inter {
     font-family: "Inter", sans-serif;
-    font-optical-sizing: auto;
     font-weight: 100;
-    font-style: normal;
 }
 
-/* 100-900 */
 .montserrat {
     font-family: "Montserrat", system-ui;
-    font-optical-sizing: auto;
     font-weight: 800;
-    font-style: normal;
 }
 
-h1,
 h2,
-h3,
 h4,
 h5,
 h6 {
-    font-family: 'Montserrat';
+    font-family: 'Montserrat' !important;
     font-weight: 900;
     color: #e9ecef;
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 900 !important;
+    color: #e9ecef !important;
+
+
+}
+
+h3 {
+    font-family: 'Montserrat', sans-serif;
 }
 
 .white-text {
@@ -112,9 +117,8 @@ h6 {
 p {
     font-family: "Inter";
     font-weight: 400;
-    color: #e9ecef
+    color: #e9ecef;
 }
-
 
 .image-container {
     width: 100%;
@@ -123,19 +127,23 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-
-
 }
-
-.img-fluid {
-    max-height: 30px;
-    object-fit: contain;
-}
-
 
 img {
+    width: 100px;
+    height: 100px;
+}
+
+img.icon-size {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+img.small-size {
     width: 20px;
     height: 20px;
+    object-fit: cover;
 }
 
 .list-item {
@@ -144,15 +152,17 @@ img {
     align-items: center;
 }
 
-.ingredients-elements .row {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
+.navbar-color {
+    background-color: #61a6ab !important;
+    font-size: 1.25rem;
+
 }
 
-.container.sticky-top {
-    background-color: #201F24;
-    /* Adjust to your desired color */
-    opacity: 1;
-    /* Ensures full opacity */
+#add-ingredient,
+#add-step {
+    color: #fa8492;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #e06f80 !important;
 }
