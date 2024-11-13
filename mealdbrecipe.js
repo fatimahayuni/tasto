@@ -30,12 +30,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (mealName) {
         const recipe = await fetchRecipeFromMealDb(mealName);
         if (recipe) {
-            console.log("recipe", recipe); //todo does not contain the thumbnail and that's fine cos it's rendering the full recipe that doesn't require thumbnail. 
             currentRecipe = recipe;
 
             // Store original ingredient quantities as baseQuantity
             currentRecipe.ingredients.forEach(ingredient => {
                 ingredient.baseQuantity = parseFloat(ingredient.quantity) || 0;  // Store the base quantity as a float
+                console.log("ingredient baseQuantity", ingredient.baseQuantity);
+
             });
 
             renderRecipeTitle(recipe);
@@ -101,6 +102,8 @@ function extractIngredients(meal) {
     for (let i = 1; i <= 20; i++) {  // TheMealDB API provides up to 20 ingredients
         const ingredientName = meal[`strIngredient${i}`];
         const ingredientQuantity = meal[`strMeasure${i}`];
+        console.log("ingredientQuantity: ", ingredientQuantity);
+
 
         if (ingredientName && ingredientName.trim() !== "") {
             // Parse the ingredient using the helper function
@@ -108,13 +111,15 @@ function extractIngredients(meal) {
 
             // Push the parsed ingredient
             ingredients.push(parsedIngredient);
+
         }
     }
+
+
     return ingredients;
 }
 
 // Helper function to parse ingredient quantity and unit
-//todo to add more regex for the ingredients.
 function parseIngredient(ingredient) {
     const result = {
         quantity: "",
@@ -122,21 +127,48 @@ function parseIngredient(ingredient) {
         name: ingredient
     };
 
-    // Regular expression to match numbers followed immediately by letters (unit)
-    const quantityUnitPattern = /^(\d+(\.\d+)?)([a-zA-Z]+)(.*)/;
+    // Handle the case where "of" is in the ingredient
+    ingredient = ingredient.trim().replace(/^of\s+/i, "");
 
-    const match = ingredient.trim().match(quantityUnitPattern);
+    // Updated regex to handle fractions, units, and special cases
+    const quantityUnitPattern = /^(\d+(\.\d+)?(?:\/\d+)?|\b(pinch|cloves)\b)?\s?([a-zA-Z]+)?\s?(.*)/;
+
+    const match = ingredient.match(quantityUnitPattern);
 
     if (match) {
-        // If matched, split the ingredient into quantity, unit, and name
-        result.quantity = match[1];  // The number part
-        result.unit = match[3];      // The unit part (letters)
-        result.name = match[4].trim(); // The remaining part (ingredient name)
-    } else {
-        // If no match, the entire string is considered as name, quantity and unit are empty
-        result.name = ingredient.trim();
+        if (match[1]) {
+            let quantity = match[1].trim();
+
+            // Handle fractions like 1/2
+            if (quantity.includes('/')) {
+                const fraction = quantity.split('/');
+                result.quantity = parseFloat(fraction[0]) / parseFloat(fraction[1]);
+            } else if (!isNaN(parseFloat(quantity))) {
+                // Handle whole numbers and decimal numbers
+                result.quantity = parseFloat(quantity);
+            } else {
+                result.quantity = quantity;  // Keep it as a string for special cases (like "Pinch")
+            }
+        }
+
+        if (match[4]) {
+            result.unit = match[4].trim();      // Unit like "tbs", "L", "g", etc.
+        }
+
+        if (match[5]) {
+            result.name = match[5].trim();      // The ingredient name
+        } else {
+            result.name = ingredient.trim();    // If no name, the whole ingredient is the name
+        }
+
+        // Special handling for "Pinch" and "Cloves"
+        if (result.quantity === "Pinch" || result.quantity === "cloves") {
+            result.unit = result.quantity;   // Pinch or Cloves as the unit
+            result.quantity = "";            // Reset the quantity field
+        }
     }
 
+    console.log("result", result);
     return result;
 }
 
@@ -223,8 +255,10 @@ async function adjustServings(event) {
     // Update ingredient quantities based on the new serving size
     currentRecipe.ingredients.forEach((ingredient, index) => {
         const scaleFactor = currentServings / originalServings;
-        const newQuantity = (ingredient.baseQuantity * scaleFactor).toFixed(2);
+        const newQuantity = Math.round(ingredient.baseQuantity * scaleFactor);
         ingredient.quantity = newQuantity;
+        console.log("Updating ingredient:", ingredient.name, "new quantity:", newQuantity);
+
 
         // Update the displayed ingredient quantity in the DOM
         const ingredientElement = document.querySelector(`#ingredient-${index}`);

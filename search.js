@@ -115,9 +115,7 @@ function displayRecipes(recipe) {
                     <h5 class="white-text">${recipeName}</h5>
                     <p class="card-cuisine">${cuisineOrigin}</p>
                 </div>
-                <div class="black-bg">
-                    <img src="assets/heart-empty.png" class="small-size favorite-icon" alt="Favorite" data-recipe='${JSON.stringify(recipeData)}'>
-                </div>
+                
             </a>`;
 
             outputElement.appendChild(cardElement);
