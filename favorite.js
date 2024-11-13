@@ -70,19 +70,20 @@ document.addEventListener("DOMContentLoaded", async function () {
                 ? `mealdbrecipe.html?mealName=${encodeURIComponent(recipe.title)}`
                 : `tastobinrecipe.html?mealName=${encodeURIComponent(recipe.title)}`;
 
-
             const imageUrl = recipe.imageUrl || 'https://via.placeholder.com/150';
+
+            // Convert the recipe title to title case
+            const titleCaseTitle = recipe.title ? recipe.title.replace(/\b\w/g, char => char.toUpperCase()) : 'No Title Available';
 
             let cardElement = document.createElement("div");
             cardElement.classList.add("col");
 
-            // Add the delete functionality to each card
             cardElement.innerHTML = `
             <a href="${recipeLink}" target="_blank" class="text-decoration-none">
                 <div class="card card-image h-100">
                    <img src="${imageUrl}" class="card-img-top standard-size" alt="${recipe.title}">
                     <div class="card-body black-bg">
-                        <h5 class="card-food-name white-text">${recipe.title || 'No Title Available'}</h5>
+                        <h5 class="card-food-name white-text">${titleCaseTitle || 'No Title Available'}</h5>
                         <p class="card-cuisine">${recipe.cuisineOrigin || 'Cuisine not specified'}</p>
                         <div class="">
                             <img src="assets/delete.png" class="small-size delete-icon" data-title="${recipe.title}" data-source="${recipe.source}" alt="Delete">

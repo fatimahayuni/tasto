@@ -97,13 +97,15 @@ async function fetchRecipeFromMealDb(mealName) {
 
         if (data.meals && data.meals.length > 0) {
             const meal = data.meals[0];
+            const rawSteps = meal.strInstructions; // raw steps: "1. Cook onion". We don't want "1. "
+            console.log("rawSteps: ", rawSteps);
             const recipe = {
                 title: meal.strMeal,
                 cuisineOrigin: meal.strArea,
                 serves: 1,
                 imageUrl: meal.strMealThumb,
                 ingredients: extractIngredients(meal),
-                steps: meal.strInstructions.split('. ').filter(step => step.trim() !== "")  // Split steps by periods
+                steps: parseSteps(rawSteps)
             };
             return recipe;
         } else {
@@ -205,6 +207,24 @@ function parseIngredient(ingredient) {
     return result;
 }
 
+function extractSteps(rawSteps) {
+    // Split the raw steps by periods and newlines, then clean up each step
+    return rawSteps
+        .split('\r\n')  // Split by newline characters
+        .map(step => step.trim())  // Trim any leading/trailing whitespace
+        .filter(step => step !== "")  // Remove empty steps
+        .map(step => step.replace(/^\d+\.\s*/, ''))  // Remove number and dot (e.g. "1. ")
+        .map(step => step.replace(/\r?\n|\r/g, ''));  // Remove carriage returns and newlines
+}
+
+
+// Function to parse and clean up steps (removes numbers or unwanted formatting)
+function parseSteps(steps) {
+    // Assuming `steps` are raw steps as an array or a string from API
+    const cleanedSteps = extractSteps(steps);
+    console.log("cleanedSteps: ", cleanedSteps);
+    return cleanedSteps;
+}
 
 async function saveRecipeToJsonBin(recipe) {
     const jsonBinAPIKey = '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6';
@@ -261,7 +281,13 @@ async function saveRecipeToJsonBin(recipe) {
 // Rendering functions
 function renderRecipeTitle(recipe) {
     const titleElement = document.querySelector("#recipeTitle");
-    titleElement.innerText = recipe.title || "Untitled Recipe";
+
+    // Convert recipe title to title case
+    const title = recipe.title || "Untitled Recipe";
+    const titleCase = title.replace(/\b\w/g, char => char.toUpperCase());
+
+    // Set title element in the DOM to the title case
+    titleElement.innerText = titleCase;
 
     const servingSizeElement = document.querySelector("#servingSize");
     servingSizeElement.innerText = recipe.serves || "1";
@@ -303,12 +329,14 @@ function renderCookingSteps(steps) {
     const cookingStepsContainer = document.querySelector("#cookingStepsContainer");
     cookingStepsContainer.innerHTML = '';
 
-    if (steps && steps.length > 0) {
+    if (steps && Array.isArray(steps) && steps.length > 0) {
         const olElement = document.createElement("ol");
         steps.forEach(step => {
+            // Remove any <br> tags from the step text
+            const cleanStep = step.replace(/<br\s*\/?>/g, '').trim();
             const stepElement = document.createElement("li");
             stepElement.classList.add("py-1", "li-black-bg", "my-2");
-            stepElement.innerText = step;
+            stepElement.innerText = cleanStep;  // Use the cleaned step
             olElement.appendChild(stepElement);
         });
         cookingStepsContainer.appendChild(olElement);
@@ -316,5 +344,6 @@ function renderCookingSteps(steps) {
         cookingStepsContainer.innerHTML = '<div>No cooking steps available.</div>';
     }
 }
+
 
 
