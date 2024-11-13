@@ -7,21 +7,24 @@ document.addEventListener("DOMContentLoaded", async function () {
     const mealName = urlParams.get('mealName');
 
     const servingSizeElement = document.querySelector("#servingSize");
-    const saveButton = document.querySelector("#saveButton");
     const increaseButton = document.querySelector("#increaseButton");
+    const decreaseButton = document.querySelector("#decreaseButton");
+    const saveButton = document.querySelector("#saveButton");
+
     increaseButton.addEventListener("click", function () {
         adjustServingSize("increase");
     });
-    const decreaseButton = document.querySelector("#decreaseButton");
     decreaseButton.addEventListener("click", function () {
         adjustServingSize("decrease");
     });
 
     // Save button
-    document.querySelector("#saveButton").addEventListener("click", async () => {
+    saveButton.addEventListener("click", async () => {
         if (currentRecipe && currentRecipe.title) {
             const formattedRecipe = formatRecipeForJsonBin(currentRecipe);
             await saveRecipeToJsonBin(formattedRecipe);
+            // Fetch the updated recipe after saving and render it
+            await fetchUpdatedRecipeAndRender(currentRecipe.title);
             Swal.fire({
                 icon: 'success',
                 title: 'Success',
@@ -29,10 +32,52 @@ document.addEventListener("DOMContentLoaded", async function () {
                 showConfirmButton: false,
                 timer: 1500
             });
+
         } else {
             console.error("No recipe to save.");
         }
     });
+
+    async function fetchUpdatedRecipeAndRender(recipeTitle) {
+        const jsonBinAPIKey = '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6';
+        const jsonBinUrl = 'https://api.jsonbin.io/v3/b/672ddd85acd3cb34a8a4edf7';
+
+        try {
+            // Fetch updated recipes from JSON Bin
+            const response = await fetch(jsonBinUrl, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': jsonBinAPIKey
+                }
+            });
+
+            if (!response.ok) {
+                console.error("Failed to fetch updated recipes", await response.text());
+                return;
+            }
+
+            const data = await response.json();
+            const recipes = Array.isArray(data.record.recipes) ? data.record.recipes : [];
+
+            // Find the updated recipe by title
+            const updatedRecipe = recipes.find(r => r.title === recipeTitle);
+            console.log("updatedRecipe: ", updatedRecipe);
+            console.log(typeof (updatedRecipe));
+
+            if (updatedRecipe) {
+                renderRecipeTitle(updatedRecipe);
+                renderRecipeImage(updatedRecipe);
+                renderIngredients(updatedRecipe.ingredients);
+                renderCookingSteps(updatedRecipe.steps);
+            } else {
+                console.error("Updated recipe not found.");
+            }
+        } catch (error) {
+            console.error("Error fetching updated recipe:", error);
+        }
+    }
+
 
     function adjustServingSize(action) {
         let currentServingSize = parseInt(servingSizeElement.innerText);
@@ -46,6 +91,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // Update the text content of the serving size element
         servingSizeElement.innerText = currentServingSize;
+
+        // Update the serves field in the currentRecipe object
+        currentRecipe.serves = currentServingSize;
 
         // Disable the decrease button if the serving size is 1
         if (currentServingSize === 1) {
@@ -98,7 +146,6 @@ async function fetchRecipeFromMealDb(mealName) {
         if (data.meals && data.meals.length > 0) {
             const meal = data.meals[0];
             const rawSteps = meal.strInstructions; // raw steps: "1. Cook onion". We don't want "1. "
-            console.log("rawSteps: ", rawSteps);
             const recipe = {
                 title: meal.strMeal,
                 cuisineOrigin: meal.strArea,
@@ -217,12 +264,10 @@ function extractSteps(rawSteps) {
         .map(step => step.replace(/\r?\n|\r/g, ''));  // Remove carriage returns and newlines
 }
 
-
 // Function to parse and clean up steps (removes numbers or unwanted formatting)
 function parseSteps(steps) {
     // Assuming `steps` are raw steps as an array or a string from API
     const cleanedSteps = extractSteps(steps);
-    console.log("cleanedSteps: ", cleanedSteps);
     return cleanedSteps;
 }
 
@@ -262,7 +307,7 @@ async function saveRecipeToJsonBin(recipe) {
 
         // Step 3: Save the updated recipes list back to JSON Bin
         const updateResponse = await fetch(jsonBinUrl, {
-            method: 'PUT', // Replace the whole array of recipes
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'X-Master-Key': jsonBinAPIKey
@@ -272,6 +317,7 @@ async function saveRecipeToJsonBin(recipe) {
 
         if (updateResponse.ok) {
         } else {
+            console.error("Error saving recipe to JSON Bin:", await updateResponse.text());
         }
     } catch (error) {
         console.error("Error saving recipe to JSON Bin:", error);
