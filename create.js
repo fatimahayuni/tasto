@@ -115,56 +115,67 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
         `;
 
-        // Append the new ingredient li to the container
         ingredientContainer.appendChild(newIngredientLi);
     }
 
-    // Event listener for the "+ Ingredient" link
-    document.addEventListener('DOMContentLoaded', function () {
-        const addIngredientLink = document.getElementById('add-ingredient');
-        addIngredientLink.addEventListener('click', function (event) {
-            event.preventDefault(); // Prevent default action of the link
-            addIngredientContainer();
-        });
-    });
+    window.removeIngredient = function (element) {
+        const ingredientLi = element.closest('li');
+        if (ingredientLi) {
+            ingredientLi.remove();
+        }
+    };
 
-
-    // Function to add an step li
     function addStepContainer() {
-        // Get the container where the step will be added
-        const stepContainer = document.getElementById('step-container');
-
-        // Create a new li element for the ingredient
+        const stepContainer = document.getElementById('sortable-steps');
         const newStepLi = document.createElement('li');
         newStepLi.draggable = true;
-        newStepLi.classList.add('list-item'); // Add the same class as the original
+        newStepLi.classList.add('d-flex', 'justify-content-between');
 
-        // Create input fields for the new step
         newStepLi.innerHTML = `
-        <div class="col-md-1">
-            <img src="/assets/drag.png" style="cursor: grab;">
-        </div>
-        <div class="col-md-10">
-            <div class="input-group">
-                <textarea class="form-control" aria-label="With textarea" placeholder="Text A"></textarea>
+            <div class="col-md-10 w-100">
+                <div class="input-group">
+                    <textarea class="form-control" aria-label="With textarea" placeholder="Heat up oil..."></textarea>
+                </div>
             </div>
-        </div>
-        <div class="col-md-1 d-flex justify-content-end">
-            <img src="/assets/delete.png" style="cursor: pointer;">
-        </div>
-    `;
+        `;
 
-        // Append the new ingredient li to the container
         stepContainer.appendChild(newStepLi);
     }
 
+    window.removeStep = function (element) {
+        const stepLi = element.closest('li');
+        if (stepLi) {
+            stepLi.remove();
+        }
+    };
 
-
-    // Event listener for the "+ Step" link
-    document.addEventListener('DOMContentLoaded', function () {
-        const addStepLink = document.getElementById('add-step');
-        addStepLink.addEventListener('click', function (event) {
-            event.preventDefault();
-            addStepContainer();
-        });
+    document.getElementById('add-ingredient').addEventListener('click', function (event) {
+        event.preventDefault();
+        addIngredientContainer();
     });
+
+    document.getElementById('add-step').addEventListener('click', function (event) {
+        event.preventDefault();
+        addStepContainer();
+    });
+});
+
+async function getImageUrl(uuid) {
+    const publicKey = 'b2d8b3ed8d9768dfcbae';
+    const secretKey = '2be26da0b270789cd1e6';
+
+    const response = await axios.get(`https://api.uploadcare.com/files/${uuid}/`, {
+        headers: {
+            'Authorization': `Uploadcare.Simple ${publicKey}:${secretKey}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const imageUrl = response.data.original_file_url;
+    console.log("Image URL", imageUrl);
+    return imageUrl
+};
+
+
+
+
