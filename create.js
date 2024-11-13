@@ -78,7 +78,13 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             console.log("Recipe saved successfully:", response.data);
-            alert("Recipe saved successfully!");
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Recipe created and successfully!',
+                showConfirmButton: false,
+                timer: 1500
+            });
         } catch (error) {
             console.error("Error saving recipe:", error);
             alert("Failed to save recipe.");
@@ -126,13 +132,11 @@ document.addEventListener('DOMContentLoaded', function () {
         newStepLi.classList.add('d-flex', 'justify-content-between');
 
         newStepLi.innerHTML = `
-            <div class="col-md-1"><img src="/assets/drag.png" alt="drag"></div>
-            <div class="col-md-10">
+            <div class="col-md-10 w-100">
                 <div class="input-group">
-                    <textarea class="form-control" aria-label="With textarea" placeholder="Step details..."></textarea>
+                    <textarea class="form-control" aria-label="With textarea" placeholder="Heat up oil..."></textarea>
                 </div>
             </div>
-            <div class="col-md-1 d-flex justify-content-end"><img src="/assets/delete.png" alt="delete" onclick="removeStep(this)"></div>
         `;
 
         stepContainer.appendChild(newStepLi);

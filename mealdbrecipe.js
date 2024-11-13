@@ -1,31 +1,70 @@
 let currentRecipe = {};  // Declare a global variable to store the current recipe data
 
-// Serve size buttons to adjust the servings
-document.querySelector("#decreaseServing").addEventListener("click", adjustServings);
-document.querySelector("#increaseServing").addEventListener("click", adjustServings);
-
-// Save button
-document.querySelector("#saveButton").addEventListener("click", async () => {
-    if (currentRecipe && currentRecipe.title) {
-        const formattedRecipe = formatRecipeForJsonBin(currentRecipe);
-        await saveRecipeToJsonBin(formattedRecipe);
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: 'Recipe saved successfully!',
-            showConfirmButton: false,
-            timer: 1500
-        });
-    } else {
-        console.error("No recipe to save.");
-    }
-});
-
-
 // Load the recipe on page load
 document.addEventListener("DOMContentLoaded", async function () {
+    // Load the recipe data
     const urlParams = new URLSearchParams(window.location.search);
     const mealName = urlParams.get('mealName');
+
+    const servingSizeElement = document.querySelector("#servingSize");
+    const saveButton = document.querySelector("#saveButton");
+    const increaseButton = document.querySelector("#increaseButton");
+    increaseButton.addEventListener("click", function () {
+        adjustServingSize("increase");
+    });
+    const decreaseButton = document.querySelector("#decreaseButton");
+    decreaseButton.addEventListener("click", function () {
+        adjustServingSize("decrease");
+    });
+
+    // Save button
+    document.querySelector("#saveButton").addEventListener("click", async () => {
+        if (currentRecipe && currentRecipe.title) {
+            const formattedRecipe = formatRecipeForJsonBin(currentRecipe);
+            await saveRecipeToJsonBin(formattedRecipe);
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Recipe saved successfully!',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else {
+            console.error("No recipe to save.");
+        }
+    });
+
+    function adjustServingSize(action) {
+        let currentServingSize = parseInt(servingSizeElement.innerText);
+
+        // Adjust the serving size based on the action
+        if (action === "increase") {
+            currentServingSize += 1;
+        } else if (action === "decrease" && currentServingSize > 1) {
+            currentServingSize -= 1;
+        }
+
+        // Update the text content of the serving size element
+        servingSizeElement.innerText = currentServingSize;
+
+        // Disable the decrease button if the serving size is 1
+        if (currentServingSize === 1) {
+            decreaseButton.disabled = true;  // Disable when serving size is 1
+        } else {
+            decreaseButton.disabled = false;  // Enable when serving size is greater than 1
+        }
+
+        // Adjust the ingredient quantities based on the new serving size.
+        currentRecipe.ingredients.forEach((ingredient, index) => {
+            const scaleFactor = currentServingSize / 1;
+            const newQuantity = Math.round(ingredient.baseQuantity * scaleFactor);
+            ingredient.quantity = newQuantity;
+
+            // Update the displayed ingredient quantity in the DOM
+            const ingredientElement = document.querySelector(`#ingredient-${index}`);
+            ingredientElement.textContent = `${newQuantity} ${ingredient.unit || ''} of ${ingredient.name}`;
+        });
+    }
 
     if (mealName) {
         const recipe = await fetchRecipeFromMealDb(mealName);
@@ -35,7 +74,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             // Store original ingredient quantities as baseQuantity
             currentRecipe.ingredients.forEach(ingredient => {
                 ingredient.baseQuantity = parseFloat(ingredient.quantity) || 0;  // Store the base quantity as a float
-                console.log("ingredient baseQuantity", ingredient.baseQuantity);
 
             });
 
@@ -46,9 +84,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         } else {
             console.error("Recipe not found.");
         }
-
-        // Initialize serving size buttons based on the default serving size
-        updateServingButtons();
     } else {
         console.error("No mealName found in the URL.");
     }
@@ -80,7 +115,7 @@ async function fetchRecipeFromMealDb(mealName) {
     }
 }
 
-// Format recipe object to the desired JSON bin structure
+// Format recipe object to the desired JSON bin structure to put in JSON Bin
 function formatRecipeForJsonBin(recipe) {
     return {
         title: recipe.title,
@@ -102,7 +137,6 @@ function extractIngredients(meal) {
     for (let i = 1; i <= 20; i++) {  // TheMealDB API provides up to 20 ingredients
         const ingredientName = meal[`strIngredient${i}`];
         const ingredientQuantity = meal[`strMeasure${i}`];
-        console.log("ingredientQuantity: ", ingredientQuantity);
 
 
         if (ingredientName && ingredientName.trim() !== "") {
@@ -168,8 +202,60 @@ function parseIngredient(ingredient) {
         }
     }
 
-    console.log("result", result);
     return result;
+}
+
+
+async function saveRecipeToJsonBin(recipe) {
+    const jsonBinAPIKey = '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6';
+    const jsonBinUrl = 'https://api.jsonbin.io/v3/b/672ddd85acd3cb34a8a4edf7';
+
+    try {
+        // Step 1: Fetch existing recipes from JSON Bin
+        const response = await fetch(jsonBinUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Master-Key': jsonBinAPIKey
+            }
+        });
+
+        if (!response.ok) {
+            console.error("Failed to fetch existing recipes", await response.text());
+            return;
+        }
+
+        const data = await response.json();
+
+        let recipes = Array.isArray(data.record.recipes) ? data.record.recipes : [];
+
+        // Step 2: Check if the recipe already exists by title
+        const existingRecipeIndex = recipes.findIndex(r => r.title === recipe.title);
+
+        if (existingRecipeIndex > -1) {
+            // If the recipe exists, update it
+            recipes[existingRecipeIndex] = recipe; // Replace the existing recipe
+        } else {
+            // If it doesn't exist, add the new recipe
+            recipes.push(recipe);
+        }
+
+        // Step 3: Save the updated recipes list back to JSON Bin
+        const updateResponse = await fetch(jsonBinUrl, {
+            method: 'PUT', // Replace the whole array of recipes
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Master-Key': jsonBinAPIKey
+            },
+            body: JSON.stringify({ recipes })
+        });
+
+        if (updateResponse.ok) {
+        } else {
+        }
+    } catch (error) {
+        console.error("Error saving recipe to JSON Bin:", error);
+    }
 }
 
 // Rendering functions
@@ -189,7 +275,6 @@ function renderRecipeImage(recipe) {
     }
 }
 
-// Function to render the ingredients list
 function renderIngredients(ingredients) {
     const ingredientsListContainer = document.querySelector("#ingredientsListContainer");
     ingredientsListContainer.innerHTML = '';  // Clear existing content
@@ -214,7 +299,6 @@ function renderIngredients(ingredients) {
     }
 }
 
-// Function to render the cooking steps
 function renderCookingSteps(steps) {
     const cookingStepsContainer = document.querySelector("#cookingStepsContainer");
     cookingStepsContainer.innerHTML = '';
@@ -232,111 +316,5 @@ function renderCookingSteps(steps) {
         cookingStepsContainer.innerHTML = '<div>No cooking steps available.</div>';
     }
 }
-
-// Adjust the servings and ingredient quantities
-async function adjustServings(event) {
-    const servingSizeElement = document.querySelector("#servingSize");
-    let currentServings = parseInt(servingSizeElement.innerText);
-    const action = event.target.id;
-
-    const originalServings = 1;  // Assuming 1 serving is the base scale
-
-    // Adjust the servings based on the action clicked
-    if (action === "decreaseServing" && currentServings > 1) {
-        currentServings -= 1;
-    } else if (action === "increaseServing") {
-        currentServings += 1;
-    }
-
-    // Update the serving size displayed on the page and in the recipe object
-    servingSizeElement.innerText = currentServings;
-    currentRecipe.serves = currentServings;
-
-    // Update ingredient quantities based on the new serving size
-    currentRecipe.ingredients.forEach((ingredient, index) => {
-        const scaleFactor = currentServings / originalServings;
-        const newQuantity = Math.round(ingredient.baseQuantity * scaleFactor);
-        ingredient.quantity = newQuantity;
-        console.log("Updating ingredient:", ingredient.name, "new quantity:", newQuantity);
-
-
-        // Update the displayed ingredient quantity in the DOM
-        const ingredientElement = document.querySelector(`#ingredient-${index}`);
-        ingredientElement.textContent = `${newQuantity} ${ingredient.unit || ''} of ${ingredient.name}`;
-    });
-
-    updateServingButtons();
-}
-
-// Function to update the state of serving buttons
-function updateServingButtons() {
-    const decreaseButton = document.querySelector("#decreaseServing");
-    const currentServings = parseInt(document.querySelector("#servingSize").innerText);
-
-    // Disable the decrease button if servings are at 1
-    if (currentServings <= 1) {
-        decreaseButton.disabled = true;
-    } else {
-        decreaseButton.disabled = false;
-    }
-}
-
-// Function to save or update the recipe in JSON Bin without overwriting existing recipes
-async function saveRecipeToJsonBin(recipe) {
-    const jsonBinAPIKey = '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6';
-    const jsonBinUrl = 'https://api.jsonbin.io/v3/b/672ddd85acd3cb34a8a4edf7';
-
-    try {
-        // Step 1: Fetch existing recipes from JSON Bin
-        const response = await fetch(jsonBinUrl, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Master-Key': jsonBinAPIKey
-            }
-        });
-
-        if (!response.ok) {
-            console.error("Failed to fetch existing recipes", await response.text());
-            return;
-        }
-
-        const data = await response.json();
-        console.log("data", data);
-
-        let recipes = Array.isArray(data.record.recipes) ? data.record.recipes : [];
-        console.log("recipes", recipes);
-
-        // Step 2: Check if the recipe already exists by title
-        const existingRecipeIndex = recipes.findIndex(r => r.title === recipe.title);
-        console.log("existingRecipeIndex", existingRecipeIndex);
-
-        if (existingRecipeIndex > -1) {
-            // If the recipe exists, update it
-            recipes[existingRecipeIndex] = recipe; // Replace the existing recipe
-        } else {
-            // If it doesn't exist, add the new recipe
-            recipes.push(recipe);
-            console.log("New recipe added");
-        }
-
-        // Step 3: Save the updated recipes list back to JSON Bin
-        const updateResponse = await fetch(jsonBinUrl, {
-            method: 'PUT', // Replace the whole array of recipes
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Master-Key': jsonBinAPIKey
-            },
-            body: JSON.stringify({ recipes })
-        });
-
-        if (updateResponse.ok) {
-        } else {
-        }
-    } catch (error) {
-        console.error("Error saving recipe to JSON Bin:", error);
-    }
-}
-
 
 
