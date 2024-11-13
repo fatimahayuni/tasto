@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // const button = document.querySelector("#submit");
+
     const searchElement = document.querySelector("#searchTerms");
 
     const handleSearch = async () => {
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Search for recipe from mealdb.com. this one is returning 100% of the data matching the search. not filtered yet. 
-async function searchMealDbRecipe(recipeName) {
+export async function searchMealDbRecipe(recipeName) {
     try {
         const mealdbDotComResponse = await axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${recipeName}`);
 
@@ -48,7 +48,7 @@ async function searchMealDbRecipe(recipeName) {
 }
 
 // Search for recipe from tasto json bin
-async function searchTastoBinRecipe(searchTerms) {
+export async function searchTastoBinRecipe(searchTerms) {
     const url = 'https://api.jsonbin.io/v3/b/672e286fe41b4d34e450e382';
     const headers = {
         'X-Master-Key': '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6',
@@ -67,7 +67,7 @@ async function searchTastoBinRecipe(searchTerms) {
     }
 }
 
-function displayRecipes(recipe) {
+export function displayRecipes(recipe) {
     const outputElement = document.querySelector("#output");
     outputElement.innerHTML = '';
 
@@ -75,7 +75,7 @@ function displayRecipes(recipe) {
     if (recipe.meals) {
         for (let a of recipe.meals) {
             let recipeLink, imageUrl, recipeName, cuisineOrigin;
-
+            let recipeData;
             if (a.idMeal) {
                 // MealDB recipe structure
                 recipeLink = `mealdbrecipe.html?mealId=${encodeURIComponent(a.idMeal)}&mealName=${encodeURIComponent(a.strMeal)}`;
@@ -108,7 +108,7 @@ function displayRecipes(recipe) {
             cardElement.classList.add("col");
 
             cardElement.innerHTML = `
-            <a href="${recipeLink}" target="_blank" class="text-decoration-none">
+            <a href="${recipeLink}" class="text-decoration-none">
                 <div class="card card-image card-img-top h-200 black-bg">
                 <img src="${imageUrl}" class="card-img-top standard-size" alt="${recipeName}">
                 <div class="card-body black-bg">

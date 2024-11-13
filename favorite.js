@@ -1,4 +1,43 @@
+import { searchMealDbRecipe, searchTastoBinRecipe, displayRecipes } from './search.js';
+
+
 document.addEventListener("DOMContentLoaded", async function () {
+    const searchElement = document.querySelector("#searchTerms");
+
+    const handleSearch = async () => {
+        const searchTerms = searchElement.value.trim();
+        if (searchTerms) {
+            // search for recipes from mealdb.com
+            const [mealDbRecipes, tastoBinRecipes] = await Promise.all([
+                searchMealDbRecipe(searchTerms),
+                searchTastoBinRecipe(searchTerms)
+            ]);
+
+
+            // check if mealdb recipes are available
+            let mealDbRecipesArray = mealDbRecipes && mealDbRecipes.meals ? mealDbRecipes.meals : [];
+
+            // check if tasto json bin recipes are available
+            let tastoBinRecipesArray = tastoBinRecipes ? tastoBinRecipes : [];
+
+            // combine both arrays into a single list of recipes
+            const combinedRecipes = {
+                meals: mealDbRecipesArray.concat(tastoBinRecipesArray)
+            };
+            console.log("combinedRecipes", combinedRecipes);
+
+            // Display the combined recipes
+            displayRecipes(combinedRecipes);
+        }
+    };
+    // Trigger search when "Enter" is pressed
+    searchElement.addEventListener("keydown", function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent form submission
+            handleSearch();
+        }
+    });
+
 
     // Fetch and combine recipes
     const tastoRecipes = await fetchRecipesFromTastoBin();
@@ -79,7 +118,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             cardElement.classList.add("col");
 
             cardElement.innerHTML = `
-            <a href="${recipeLink}" target="_blank" class="text-decoration-none">
+            <a href="${recipeLink}" class="text-decoration-none">
                 <div class="card card-image h-100">
                    <img src="${imageUrl}" class="card-img-top standard-size" alt="${recipe.title}">
                     <div class="card-body black-bg">
