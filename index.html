@@ -17,45 +17,44 @@
 </head>
 
 <body>
-  <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary navbar-color montserrat">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="index.html"><img src="assets/logo.png" width="100px" height="100px"></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0 justify-content-center">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/favorite.html">Favorite Recipes</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/create.html">Create Recipe</a>
-          </li>
-        </ul>
+  <div class="container">
+    <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary navbar-color montserrat">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html"><img src="assets/logo.png" width="100px" height="100px"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 justify-content-center">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/favorite.html">Favorite Recipes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/create.html">Create Recipe</a>
+            </li>
+          </ul>
+
+          <form class="d-flex" role="search">
+            <div class="input-group">
+              <span class="input-group-text" id="basic-addon1">
+                <img src="assets/search.png" alt="Search Icon" class="small-size">
+              </span>
+              <input class="form-control" type="search" placeholder="Search Tasto" aria-label="Search" id="searchTerms">
+            </div>
+          </form>
 
 
-
-
-        <form class="d-flex" role="search">
-          <div class="input-group">
-            <span class="input-group-text" id="basic-addon1">
-              <img src="assets/search.png" alt="Search Icon" class="small-size">
-            </span>
-            <input class="form-control" type="search" placeholder="Search Tasto" aria-label="Search" id="searchTerms">
-          </div>
-        </form>
-
-
+        </div>
       </div>
-    </div>
-  </nav>
-  <div class="container mt-5">
+    </nav>
+
 
 
 
     <!--Recipe cards are rendered here-->
-    <div id="output" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center"></div>
+    <div id="output" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 justify-content-center mt-5">
+    </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.js"
     integrity="sha512-luUnkeG+uabiT2pZdi5ME5uADvq+FpDs2fK5V0nVXrHCND9F077fKaE9W//oJvGnWSmwQmCau63A6s3um1NZmg=="

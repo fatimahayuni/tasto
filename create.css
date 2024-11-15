@@ -174,3 +174,23 @@ img.small-size {
 #ingredient-measurement {
     width: 80px;
 }
+
+/* Custom container class */
+.custom-container {
+    width: 100%;
+    /* Default width for mobile screens */
+}
+
+/* Adjust for screens from 768px (medium screens like your MacBook 11-inch) to 991px */
+@media (min-width: 768px) and (max-width: 991px) {
+    .custom-container {
+        max-width: 30%;
+    }
+}
+
+/* Adjust for screens from 992px (larger screens like desktops) onwards */
+@media (min-width: 992px) {
+    .custom-container {
+        max-width: 50%;
+    }
+}
