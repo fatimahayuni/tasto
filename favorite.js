@@ -119,41 +119,23 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             cardElement.innerHTML = `
             <a href="${recipeLink}" class="text-decoration-none">
-                <div class="card card-image h-100">
-                   <img src="${imageUrl}" class="card-img-top standard-size" alt="${recipe.title}">
-                    <div class="card-body black-bg">
-                        <h5 class="card-food-name white-text">${titleCaseTitle || 'No Title Available'}</h5>
-                        <p class="card-cuisine">${recipe.cuisineOrigin || 'Cuisine not specified'}</p>
-                        <div class="">
-                            <img src="assets/delete.png" class="small-size delete-icon" data-title="${recipe.title}" data-source="${recipe.source}" alt="Delete">
-                        </div>
+                <div class="card card-image h-100 d-flex p-0">
+                    <img src="${imageUrl}" class="card-img-top standard-size d-flex" alt="${recipe.title}">
+                    <div class="card-body black-bg align-items-start p-0">
+                    <!-- Red border div for the title -->
+                    <h5 class="card-food-name white-text my-2 text-start w-100">${titleCaseTitle || 'No Title Available'}</h5>
+                    <!-- Red border div for the cuisine -->
+                    <p class="card-cuisine text-start w-100 mb-2">${recipe.cuisineOrigin || 'Cuisine not specified'}</p>
+                    <!-- Red border div for the delete icon -->
+                    <div class="d-flex align-items-center p-0 w-100">
+                        <img src="assets/delete.png" class="small-size delete-icon" data-title="${recipe.title}" data-source="${recipe.source}" alt="Delete">
+                    </div>
                     </div>
                 </div>
             </a>`;
 
             outputElement.appendChild(cardElement);
         });
-
-        // Attach the event listener to all delete icons
-        //     const deleteIcons = document.querySelectorAll('.delete-icon');
-        //     deleteIcons.forEach(icon => {
-        //         icon.addEventListener('click', async (e) => {
-        //             e.preventDefault();
-        //             const recipeTitle = icon.getAttribute('data-title');
-        //             const source = icon.getAttribute('data-source');
-
-        //             // Call the appropriate delete function based on the source
-        //             if (source === 'mealdb') {
-        //                 await deleteMealdbRecipe(recipeTitle);
-        //             } else if (source === 'tasto') {
-        //                 await deleteTastoRecipe(recipeTitle);
-        //             }
-
-        //             // Remove the recipe card from the UI
-        //             icon.closest('.col').remove();
-        //         });
-        //     }
-        // );
 
         // Attach the event listener to all delete icons
         const deleteIcons = document.querySelectorAll('.delete-icon');
