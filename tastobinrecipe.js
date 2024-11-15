@@ -10,9 +10,9 @@ document.addEventListener("DOMContentLoaded", async function () {
       renderRecipeImage(recipe);
       renderIngredients(recipe.ingredients);
       renderCookingSteps(recipe.steps);
-      updateIngredientQuantities(recipe); // Enable serving size update functionality
-      handleFavoriteButtonClick();        // Enable favorite button functionality
-      handleSaveButtonClick(recipe);            // Enable save button functionality
+      updateIngredientQuantities(recipe);
+      handleFavoriteButtonClick();
+      handleSaveButtonClick(recipe);
 
     } else {
       console.error("Recipe not found.");
