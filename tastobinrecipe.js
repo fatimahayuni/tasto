@@ -84,7 +84,6 @@ function renderIngredients(ingredients) {
   }
 }
 
-
 // Function to render cooking steps
 function renderCookingSteps(steps) {
   const cookingStepsContainer = document.querySelector("#cookingStepsContainer");
@@ -107,7 +106,6 @@ function renderCookingSteps(steps) {
     cookingStepsContainer.innerHTML = '<div>No cooking steps available.</div>';
   }
 }
-
 
 // Function to handle the favorite button click
 function handleFavoriteButtonClick() {
@@ -173,7 +171,6 @@ async function handleSaveButtonClick(recipe) {
     });
   }
 }
-
 
 async function saveRecipeToJSONBin(recipe) {
   try {

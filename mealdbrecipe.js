@@ -1,4 +1,38 @@
-let currentRecipe = {};  // Declare a global variable to store the current recipe data
+let currentRecipe = {};
+// JSON Bin Constants
+const JSON_BIN_API_KEY = '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6';
+const JSON_BIN_URL = 'https://api.jsonbin.io/v3/b/672ddd85acd3cb34a8a4edf7';
+
+// TheMealDB API Constants
+const MEAL_DB_API_BASE_URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+
+// DOM Elements Selectors
+const SELECTORS = {
+    servingSize: "#servingSize",
+    increaseButton: "#increaseButton",
+    decreaseButton: "#decreaseButton",
+    saveButton: "#saveButton",
+    recipeTitle: "#recipeTitle",
+    recipeImage: "#recipeImage",
+    ingredientsListContainer: "#ingredientsListContainer",
+    cookingStepsContainer: "#cookingStepsContainer"
+};
+
+const servingSizeElement = document.querySelector(SELECTORS.servingSize);
+const increaseButton = document.querySelector(SELECTORS.increaseButton);
+const decreaseButton = document.querySelector(SELECTORS.decreaseButton);
+const saveButton = document.querySelector(SELECTORS.saveButton);
+
+// Swal Alert Options
+const SWAL_ALERT_OPTIONS = {
+    success: {
+        icon: 'success',
+        title: 'Success',
+        text: 'Recipe saved successfully!',
+        showConfirmButton: false,
+        timer: 1500
+    }
+};
 
 // Load the recipe on page load
 document.addEventListener("DOMContentLoaded", async function () {
@@ -25,13 +59,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             await saveRecipeToJsonBin(formattedRecipe);
             // Fetch the updated recipe after saving and render it
             await fetchUpdatedRecipeAndRender(currentRecipe.title);
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'Recipe saved successfully!',
-                showConfirmButton: false,
-                timer: 1500
-            });
+            Swal.fire(SWAL_ALERT_OPTIONS.success);
 
         } else {
             console.error("No recipe to save.");
@@ -39,16 +67,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     async function fetchUpdatedRecipeAndRender(recipeTitle) {
-        const jsonBinAPIKey = '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6';
-        const jsonBinUrl = 'https://api.jsonbin.io/v3/b/672ddd85acd3cb34a8a4edf7';
 
         try {
             // Fetch updated recipes from JSON Bin
-            const response = await fetch(jsonBinUrl, {
+            const response = await fetch(JSON_BIN_URL, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-Master-Key': jsonBinAPIKey
+                    'X-Master-Key': JSON_BIN_API_KEY
                 }
             });
 
@@ -59,16 +85,15 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             const data = await response.json();
             const recipes = Array.isArray(data.record.recipes) ? data.record.recipes : [];
-
-            // Find the updated recipe by title
             const updatedRecipe = recipes.find(r => r.title === recipeTitle);
             console.log("updatedRecipe: ", updatedRecipe);
-            console.log(typeof (updatedRecipe));
 
             if (updatedRecipe) {
+                currentRecipe = updatedRecipe;
+
                 renderRecipeTitle(updatedRecipe);
                 renderRecipeImage(updatedRecipe);
-                renderIngredients(updatedRecipe.ingredients);
+                renderIngredients(updatedRecipe);
                 renderCookingSteps(updatedRecipe.steps);
             } else {
                 console.error("Updated recipe not found.");
@@ -108,9 +133,11 @@ document.addEventListener("DOMContentLoaded", async function () {
             const newQuantity = Math.round(ingredient.baseQuantity * scaleFactor);
             ingredient.quantity = newQuantity;
 
-            // Update the displayed ingredient quantity in the DOM
-            const ingredientElement = document.querySelector(`#ingredient-${index}`);
-            ingredientElement.textContent = `${newQuantity} ${ingredient.unit || ''} of ${ingredient.name}`;
+            // Re-render the ingredients list with updated quantities
+            renderIngredients(currentRecipe.ingredients);
+
+            // Save the updated recipe to JSON Bin
+            saveRecipeToJsonBin(currentRecipe);
         });
     }
 
@@ -140,7 +167,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 // Fetch data from TheMealDB API
 async function fetchRecipeFromMealDb(mealName) {
     try {
-        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${mealName}`);
+        const response = await fetch(`${MEAL_DB_API_BASE_URL}${mealName}`);
         const data = await response.json();
 
         if (data.meals && data.meals.length > 0) {
@@ -152,7 +179,7 @@ async function fetchRecipeFromMealDb(mealName) {
                 serves: 1,
                 imageUrl: meal.strMealThumb,
                 ingredients: extractIngredients(meal),
-                steps: parseSteps(rawSteps)
+                steps: parseAndExtractSteps(rawSteps)
             };
             return recipe;
         } else {
@@ -164,23 +191,7 @@ async function fetchRecipeFromMealDb(mealName) {
     }
 }
 
-// Format recipe object to the desired JSON bin structure to put in JSON Bin
-function formatRecipeForJsonBin(recipe) {
-    return {
-        title: recipe.title,
-        imageUrl: recipe.imageUrl,
-        cuisineOrigin: recipe.cuisineOrigin,
-        serves: recipe.serves.toString(),
-        ingredients: recipe.ingredients.map(ingredient => ({
-            quantity: ingredient.quantity || "N/A",
-            unit: ingredient.unit || "",
-            name: ingredient.name
-        })),
-        steps: recipe.steps
-    };
-}
-
-// Helper function to extract ingredients from the meal object
+// Function to extract ingredients from the meal object
 function extractIngredients(meal) {
     const ingredients = [];
     for (let i = 1; i <= 20; i++) {  // TheMealDB API provides up to 20 ingredients
@@ -197,12 +208,10 @@ function extractIngredients(meal) {
 
         }
     }
-
-
     return ingredients;
 }
 
-// Helper function to parse ingredient quantity and unit
+// Function to parse ingredient quantity and unit
 function parseIngredient(ingredient) {
     const result = {
         quantity: "",
@@ -254,21 +263,33 @@ function parseIngredient(ingredient) {
     return result;
 }
 
-function extractSteps(rawSteps) {
+// Function to parse and clean up steps (removes numbers or unwanted formatting)
+function parseAndExtractSteps(rawSteps) {
+    if (typeof rawSteps !== "string") return [];
+
     // Split the raw steps by periods and newlines, then clean up each step
     return rawSteps
-        .split('\r\n')  // Split by newline characters
-        .map(step => step.trim())  // Trim any leading/trailing whitespace
-        .filter(step => step !== "")  // Remove empty steps
-        .map(step => step.replace(/^\d+\.\s*/, ''))  // Remove number and dot (e.g. "1. ")
-        .map(step => step.replace(/\r?\n|\r/g, ''));  // Remove carriage returns and newlines
+        .split('\r\n')          // Split by newline characters
+        .map(step => step.trim())  // Trim leading/trailing whitespace
+        .filter(step => step !== "") // Remove empty steps
+        .map(step => step.replace(/^\d+\.\s*/, '')) // Remove leading numbers and dots (e.g., "1. ")
+        .map(step => step.replace(/\r?\n|\r/g, '')); // Remove carriage returns and newlines
 }
 
-// Function to parse and clean up steps (removes numbers or unwanted formatting)
-function parseSteps(steps) {
-    // Assuming `steps` are raw steps as an array or a string from API
-    const cleanedSteps = extractSteps(steps);
-    return cleanedSteps;
+// Format recipe object to the desired JSON bin structure to put in JSON Bin
+function formatRecipeForJsonBin(recipe) {
+    return {
+        title: recipe.title,
+        imageUrl: recipe.imageUrl,
+        cuisineOrigin: recipe.cuisineOrigin,
+        serves: recipe.serves.toString(),
+        ingredients: recipe.ingredients.map(ingredient => ({
+            quantity: ingredient.quantity || "N/A",
+            unit: ingredient.unit || "",
+            name: ingredient.name
+        })),
+        steps: recipe.steps
+    };
 }
 
 async function saveRecipeToJsonBin(recipe) {
@@ -348,6 +369,8 @@ function renderRecipeImage(recipe) {
 }
 
 function renderIngredients(ingredients) {
+    console.log("Rendering updated ingredients:", ingredients);
+
     const ingredientsListContainer = document.querySelector("#ingredientsListContainer");
     ingredientsListContainer.innerHTML = '';  // Clear existing content
 
