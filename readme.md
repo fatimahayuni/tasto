@@ -43,6 +43,7 @@ Here are some areas I plan to focus on for future versions of the app:
 
 - **Refactoring**
 - **Cleaning Up The Cooking Steps Further**: Currently the steps for each recipe from the mealdb.com are not standardized and the current regex does not address all possible string issues. 
+- **Allow the search bar to be used in all pages**: Since there's no server-side framework used here like Express, I can't use Handlebars that would help with templating. To prevent cluttering the current code, search function is only available in a couple of pages.
 - **User Authentication**: Adding user authentication so users can save their favorite recipes or create custom recipe collections.
 - **Recipe Rating and Comments**: Allowing users to rate recipes and leave comments would help other users decide which recipes to try.
 - **Nutrition Information**: Adding nutritional information for each recipe, like calories, carbs, proteins, and fats, to help users make healthier choices.
