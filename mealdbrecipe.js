@@ -1,4 +1,4 @@
-let currentRecipe = {};  // Declare a global variable to store the current recipe data
+let currentRecipe = {};
 
 // Load the recipe on page load
 document.addEventListener("DOMContentLoaded", async function () {
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         adjustServingSize("decrease");
     });
 
-    // Save button
+    // Save button. This will trigger the saving of the current recipe to mealdbrecipe json bin. 
     saveButton.addEventListener("click", async () => {
         if (currentRecipe && currentRecipe.title) {
             const formattedRecipe = formatRecipeForJsonBin(currentRecipe);
@@ -37,6 +37,41 @@ document.addEventListener("DOMContentLoaded", async function () {
             console.error("No recipe to save.");
         }
     });
+
+    // when the page refreshes, it will first check if the recipe exists in json bin first. 
+    if (mealName) {
+        const jsonBinRecipe = await fetchRecipeFromJsonBin(mealName);
+
+        let recipe;
+
+        if (jsonBinRecipe) {
+            console.log(`Loaded recipe from JSON Bin: ${mealName}`);
+            recipe = jsonBinRecipe; // Use the recipe from JSON Bin if it exists
+        } else {
+            // If not found in JSON Bin, fetch it from TheMealDB API
+            recipe = await fetchRecipeFromMealDb(mealName);
+            if (recipe) {
+                console.log(`Loaded recipe from TheMealDB: ${mealName}`);
+            }
+        }
+
+        // If we have a recipe in json bin, set it as the currentRecipe and render it
+        if (recipe) {
+            currentRecipe = recipe;
+
+            // Store original ingredient quantities for adjusting serving sizes
+            currentRecipe.ingredients.forEach(ingredient => {
+                ingredient.baseQuantity = parseFloat(ingredient.quantity) || 0;
+            });
+
+            renderRecipeTitle(recipe);
+            renderRecipeImage(recipe);
+            renderIngredients(recipe.ingredients);
+            renderCookingSteps(recipe.steps);
+        } else {
+            console.error("Recipe not found.");
+        }
+    }
 
     async function fetchUpdatedRecipeAndRender(recipeTitle) {
         const jsonBinAPIKey = '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6';
@@ -77,7 +112,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-
     function adjustServingSize(action) {
         let currentServingSize = parseInt(servingSizeElement.innerText);
 
@@ -111,63 +145,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             const ingredientElement = document.querySelector(`#ingredient-${index}`);
             ingredientElement.textContent = `${newQuantity} ${ingredient.unit || ''} of ${ingredient.name}`;
         });
-    }
-
-    // if (mealName) {
-    //     const recipe = await fetchRecipeFromMealDb(mealName);
-    //     if (recipe) {
-    //         currentRecipe = recipe;
-
-    //         // Store original ingredient quantities as baseQuantity
-    //         currentRecipe.ingredients.forEach(ingredient => {
-    //             ingredient.baseQuantity = parseFloat(ingredient.quantity) || 0;  // Store the base quantity as a float
-
-    //         });
-
-    //         renderRecipeTitle(recipe);
-    //         renderRecipeImage(recipe);
-    //         renderIngredients(recipe.ingredients);
-    //         renderCookingSteps(recipe.steps);
-    //     } else {
-    //         console.error("Recipe not found.");
-    //     }
-    // } else {
-    //     console.error("No mealName found in the URL.");
-    // }
-
-    if (mealName) {
-        // Step 1: Check if the recipe exists in JSON Bin first
-        const jsonBinRecipe = await fetchRecipeFromJsonBin(mealName);
-
-        let recipe;
-
-        if (jsonBinRecipe) {
-            console.log(`Loaded recipe from JSON Bin: ${mealName}`);
-            recipe = jsonBinRecipe; // Use the recipe from JSON Bin if it exists
-        } else {
-            // Step 2: If not found in JSON Bin, fetch it from TheMealDB API
-            recipe = await fetchRecipeFromMealDb(mealName);
-            if (recipe) {
-                console.log(`Loaded recipe from TheMealDB: ${mealName}`);
-            }
-        }
-
-        // Step 3: If we have a recipe, set it as the currentRecipe and render it
-        if (recipe) {
-            currentRecipe = recipe;
-
-            // Store original ingredient quantities for adjusting serving sizes
-            currentRecipe.ingredients.forEach(ingredient => {
-                ingredient.baseQuantity = parseFloat(ingredient.quantity) || 0;
-            });
-
-            renderRecipeTitle(recipe);
-            renderRecipeImage(recipe);
-            renderIngredients(recipe.ingredients);
-            renderCookingSteps(recipe.steps);
-        } else {
-            console.error("Recipe not found.");
-        }
     }
 
 });
@@ -248,7 +225,7 @@ function formatRecipeForJsonBin(recipe) {
     };
 }
 
-// Helper function to extract ingredients from the meal object
+// Function to extract ingredients from the meal object
 function extractIngredients(meal) {
     const ingredients = [];
     for (let i = 1; i <= 20; i++) {  // TheMealDB API provides up to 20 ingredients
@@ -270,7 +247,7 @@ function extractIngredients(meal) {
     return ingredients;
 }
 
-// Helper function to parse ingredient quantity and unit
+// Function to parse ingredient quantity and unit
 function parseIngredient(ingredient) {
     const result = {
         quantity: "",
@@ -323,19 +300,24 @@ function parseIngredient(ingredient) {
 }
 
 function extractSteps(rawSteps) {
+    console.log("rawSteps: ", rawSteps);
+
     // Split the raw steps by periods and newlines, then clean up each step
     return rawSteps
-        .split('\r\n')  // Split by newline characters
-        .map(step => step.trim())  // Trim any leading/trailing whitespace
-        .filter(step => step !== "")  // Remove empty steps
-        .map(step => step.replace(/^\d+\.\s*/, ''))  // Remove number and dot (e.g. "1. ")
-        .map(step => step.replace(/\r?\n|\r/g, ''));  // Remove carriage returns and newlines
+        .split(/(?<=\.)\s*[\r\n]+/)
+        .map(step => step.trim()) // Trim whitespace from each step
+        .filter(step => step !== "") // Remove any empty entries
+        .map(step => step.replace(/^\s*\d+\)\s*/, ''));  // Remove numbers followed by a parenthesis, along with any leading spaces
+
 }
 
 // Function to parse and clean up steps (removes numbers or unwanted formatting)
 function parseSteps(steps) {
+    console.log("Steps to parse: ", steps);
+
     // Assuming `steps` are raw steps as an array or a string from API
     const cleanedSteps = extractSteps(steps);
+    console.log("cleanedSteps: ", cleanedSteps);
     return cleanedSteps;
 }
 
