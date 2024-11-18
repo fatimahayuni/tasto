@@ -1,5 +1,37 @@
 import { searchMealDbRecipe, searchTastoBinRecipe, displayRecipes } from './search.js';
 
+// URLs
+const MEALDB_BIN_URL = 'https://api.jsonbin.io/v3/b/672ddd85acd3cb34a8a4edf7';
+const TASTO_BIN_URL = 'https://api.jsonbin.io/v3/b/672e286fe41b4d34e450e382';
+
+// API Headers
+const HEADERS = {
+    'X-Master-Key': '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6',
+    'Content-Type': 'application/json'
+};
+
+// Placeholder image
+const PLACEHOLDER_IMAGE_URL = 'https://via.placeholder.com/150';
+
+// SweetAlert Config
+const SWEETALERT_CONFIRMATION = {
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!"
+};
+
+const SWEETALERT_SUCCESS = {
+    title: "Deleted!",
+    text: "The recipe has been deleted.",
+    icon: "success",
+    confirmButtonColor: "#3085d6"
+};
+
+
 
 document.addEventListener("DOMContentLoaded", async function () {
     const searchElement = document.querySelector("#searchTerms");
@@ -59,11 +91,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Fetch recipes from MealDB bin and standardize the data
     async function fetchRecipesFromTastoBin() {
-        const tastoResponse = await axios.get('https://api.jsonbin.io/v3/b/672e286fe41b4d34e450e382', {
-            headers: {
-                'X-Master-Key': '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6'
-            }
-        });
+        const tastoResponse = await axios.get(TASTO_BIN_URL, { headers: HEADERS });
+
         console.log("tastoResponse", tastoResponse);
 
         const tastoRecipes = tastoResponse.data.record.recipes || [];
@@ -78,12 +107,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Fetch recipes from MealDB bin and standardize the data
     async function fetchRecipesFromMealdbBin() {
-        const mealdbResponse = await axios.get('https://api.jsonbin.io/v3/b/672ddd85acd3cb34a8a4edf7', {
-            headers: {
-                'X-Master-Key': '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6'
-            }
-        });
-
+        const mealdbResponse = await axios.get(MEALDB_BIN_URL, { headers: HEADERS });
         const mealdbRecipes = mealdbResponse.data.record.recipes || [];
 
         return mealdbRecipes.map(recipe => ({
@@ -188,19 +212,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     async function deleteMealdbRecipe(recipeTitle) {
         try {
-            const url = `https://api.jsonbin.io/v3/b/672ddd85acd3cb34a8a4edf7`; // MealDB Bin
-            const headers = {
-                'X-Master-Key': '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6',
-                'Content-Type': 'application/json'
-            };
-
-            // Fetch the current data from the MealDB bin
-            const response = await axios.get(url, { headers });
+            const response = await axios.get(MEALDB_BIN_URL, { headers: HEADERS });
             const data = response.data.record;
-
-            // Log the current structure for debugging
-
-            // Filter out the recipe based on `strMeal` for MealDB structure
             const updatedRecipes = data.recipes.filter(recipe => recipe.title !== recipeTitle);
 
             // Update the bin with the filtered data
@@ -208,7 +221,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             const updatedData = { recipes: updatedRecipes };
 
             // Send the updated data back to JSON Bin
-            await axios.put(url, updatedData, { headers });
+            await axios.put(MEALDB_BIN_URL, { recipes: updatedRecipes }, { headers: HEADERS });
         } catch (error) {
             console.error('Error deleting recipe from MealDB Bin:', error);
         }
@@ -216,14 +229,8 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     async function deleteTastoRecipe(recipeTitle) {
         try {
-            const url = `https://api.jsonbin.io/v3/b/672e286fe41b4d34e450e382`; // Tasto Bin
-            const headers = {
-                'X-Master-Key': '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6',
-                'Content-Type': 'application/json'
-            };
-
             // Fetch the current data from the Tasto bin
-            const response = await axios.get(url, { headers });
+            const response = await axios.get(TASTO_BIN_URL, { headers: HEADERS });
             console.log("response", response);
             const data = response.data.record;
             console.log("deleteTastoRecipe", data);
@@ -233,7 +240,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             console.log("tasto data.recipes", data.recipes);
 
             // Send the updated data back to JSON Bin
-            await axios.put(url, data, { headers });
+            await axios.put(TASTO_BIN_URL, data, { headers: HEADERS });
             console.log(`Recipe with title "${recipeTitle}" has been deleted from Tasto Bin`);
         } catch (error) {
             console.error('Error deleting recipe from Tasto Bin:', error);

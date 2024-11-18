@@ -1,3 +1,20 @@
+const SELECTORS = {
+  recipeTitle: "#recipeTitle",
+  servingSize: "#servingSize",
+  recipeImage: "#recipeImage",
+  ingredientsListContainer: "#ingredientsListContainer",
+  cookingStepsContainer: "#cookingStepsContainer",
+  favoriteButton: "#favoriteButton",
+  decreaseServing: "#decreaseServing",
+  increaseServing: "#increaseServing",
+  saveButton: "#saveButton",
+};
+
+const API_URL = 'https://api.jsonbin.io/v3/b/672e286fe41b4d34e450e382';
+const API_HEADERS = {
+  'X-Master-Key': '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6',
+};
+
 // Main function to render the recipe on page load
 document.addEventListener("DOMContentLoaded", async function () {
   const urlParams = new URLSearchParams(window.location.search);
@@ -26,11 +43,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 // Fetch data from JSON Bin
 async function fetchRecipeFromJSONBin(mealName) {
   try {
-    const response = await axios.get('https://api.jsonbin.io/v3/b/672e286fe41b4d34e450e382', {
-      headers: {
-        'X-Master-Key': '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6'
-      }
-    });
+    const response = await axios.get(API_URL, { headers: API_HEADERS });
 
     console.log("response.data", response.data);
 
@@ -49,10 +62,10 @@ async function fetchRecipeFromJSONBin(mealName) {
 
 // Function to render the recipe title and serving size
 function renderRecipeTitle(recipe) {
-  const titleElement = document.querySelector("#recipeTitle");
+  const titleElement = document.querySelector(SELECTORS.recipeTitle);
   titleElement.innerText = recipe.title || "Untitled Recipe";
 
-  const servingSizeElement = document.querySelector("#servingSize");
+  const servingSizeElement = document.querySelector(SELECTORS.servingSize);
   servingSizeElement.innerText = recipe.serves || "1";
 
   // Dynamically set the <title> tag to reflect the recipe title
@@ -61,7 +74,7 @@ function renderRecipeTitle(recipe) {
 
 // Function to render recipe image
 function renderRecipeImage(recipe) {
-  const recipeImageElement = document.querySelector("#recipeImage");
+  const recipeImageElement = document.querySelector(SELECTORS.recipeImage);
   if (recipe.imageUrl) {
     recipeImageElement.innerHTML = `<img src="${recipe.imageUrl}" class="img-fluid centered-image" alt="${recipe.title}">`;
   }
@@ -69,7 +82,7 @@ function renderRecipeImage(recipe) {
 
 // Function to render ingredients
 function renderIngredients(ingredients) {
-  const ingredientsListContainer = document.querySelector("#ingredientsListContainer");
+  const ingredientsListContainer = document.querySelector(SELECTORS.ingredientsListContainer);
   ingredientsListContainer.innerHTML = ''
 
   if (ingredients && ingredients.length > 0) {
@@ -86,7 +99,7 @@ function renderIngredients(ingredients) {
 
 // Function to render cooking steps
 function renderCookingSteps(steps) {
-  const cookingStepsContainer = document.querySelector("#cookingStepsContainer");
+  const cookingStepsContainer = document.querySelector(SELECTORS.cookingStepsContainer);
   cookingStepsContainer.innerHTML = '';
 
   if (steps && steps.length > 0) {
@@ -109,7 +122,7 @@ function renderCookingSteps(steps) {
 
 // Function to handle the favorite button click
 function handleFavoriteButtonClick() {
-  const favoriteButton = document.querySelector("#favoriteButton");
+  const favoriteButton = document.querySelector(SELECTORS.favoriteButton);
   if (favoriteButton) {
     favoriteButton.addEventListener("click", () => {
       console.log("Add recipe to favorites"); // Implement favorite functionality here
@@ -119,9 +132,9 @@ function handleFavoriteButtonClick() {
 
 // Function to update ingredient quantities based on the new serving size
 function updateIngredientQuantities(recipe) {
-  const decreaseButton = document.querySelector("#decreaseServing");
-  const increaseButton = document.querySelector("#increaseServing");
-  const servingSizeElement = document.querySelector("#servingSize");
+  const decreaseButton = document.querySelector(SELECTORS.decreaseServing);
+  const increaseButton = document.querySelector(SELECTORS.increaseServing);
+  const servingSizeElement = document.querySelector(SELECTORS.servingSize);
 
   // Event listener for decrease button
   decreaseButton.addEventListener("click", function () {
@@ -164,7 +177,7 @@ function updateIngredientQuantities(recipe) {
 
 // Function to save recipe to JSON Bin
 async function handleSaveButtonClick(recipe) {
-  const saveButton = document.querySelector("#saveButton");
+  const saveButton = document.querySelector(SELECTORS.saveButton);
   if (saveButton) {
     saveButton.addEventListener("click", async () => {
       await saveRecipeToJSONBin(recipe);
@@ -175,11 +188,8 @@ async function handleSaveButtonClick(recipe) {
 async function saveRecipeToJSONBin(recipe) {
   try {
     // Step 1: Fetch the current data (all recipes)
-    const response = await axios.get('https://api.jsonbin.io/v3/b/672e286fe41b4d34e450e382', {
-      headers: {
-        'X-Master-Key': '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6'
-      }
-    });
+    const response = await axios.get(API_URL, { headers: API_HEADERS });
+
     console.log(response.data);
 
     const recipeObject = response.data.record.recipes;
@@ -199,13 +209,9 @@ async function saveRecipeToJSONBin(recipe) {
 
       // Step 3: Save the updated recipe collection back to JSONBin
       const updateResponse = await axios.put(
-        'https://api.jsonbin.io/v3/b/672e286fe41b4d34e450e382',
+        API_URL,
         { recipes: recipeObject },
-        {
-          headers: {
-            'X-Master-Key': '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6'
-          }
-        }
+        { headers: API_HEADERS }
       );
 
       if (updateResponse.status === 200) {

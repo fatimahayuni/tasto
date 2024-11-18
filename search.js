@@ -36,11 +36,19 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// Constants for URLs and Headers
+const MEALDB_API_URL = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+const TASTO_API_URL = 'https://api.jsonbin.io/v3/b/672e286fe41b4d34e450e382';
+const JSONBIN_SAVE_URL = 'https://api.jsonbin.io/v3/b/672ddd85acd3cb34a8a4edf7';
+const JSONBIN_HEADERS = {
+    'X-Master-Key': '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6',
+    'Content-Type': 'application/json'
+};
+
 // Search for recipe from mealdb.com. this one is returning 100% of the data matching the search. not filtered yet. 
 export async function searchMealDbRecipe(recipeName) {
     try {
-        const mealdbDotComResponse = await axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${recipeName}`);
-
+        const mealdbDotComResponse = await axios.get(`${MEALDB_API_URL}${recipeName}`);
         return mealdbDotComResponse.data;
     } catch (error) {
         console.error("Error fetching recipe:", error);
@@ -49,12 +57,8 @@ export async function searchMealDbRecipe(recipeName) {
 
 // Search for recipe from tasto json bin
 export async function searchTastoBinRecipe(searchTerms) {
-    const url = 'https://api.jsonbin.io/v3/b/672e286fe41b4d34e450e382';
-    const headers = {
-        'X-Master-Key': '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6',
-    };
     try {
-        const tastoBinResponse = await axios.get(url, { headers });
+        const tastoBinResponse = await axios.get(TASTO_API_URL, { headers: JSONBIN_HEADERS });
         const tastoBinRecipes = tastoBinResponse.data.record.recipes;
         const matchingRecipes = tastoBinRecipes.filter(recipe =>
             recipe.title.toLowerCase().includes(searchTerms.toLowerCase())
@@ -135,22 +139,16 @@ export function displayRecipes(recipe) {
 }
 
 async function saveRecipeToJsonBin(recipe) {
-    const url = 'https://api.jsonbin.io/v3/b/672ddd85acd3cb34a8a4edf7';
-    const headers = {
-        'X-Master-Key': '$2a$10$hizbF/WWO7aCi8N9hdKNKuDWhS.ADUD.qn6O4zhWBRRdlOa8ls7t6',
-        'Content-Type': 'application/json'
-    };
-
     try {
         // Fetch existing data
-        const response = await axios.get(url, { headers });
+        const response = await axios.get(JSONBIN_SAVE_URL, { headers: JSONBIN_HEADERS });
         const currentData = response.data.record;
 
         // Add the new recipe to the existing array of recipes
         currentData.recipes.push(recipe);
 
         // Update the JSON bin with the new data
-        await axios.put(url, { record: currentData }, { headers });
+        await axios.put(JSONBIN_SAVE_URL, { record: currentData }, { headers: JSONBIN_HEADERS });
         console.log("Recipe saved successfully.");
     } catch (error) {
         console.error("Error saving recipe:", error);
